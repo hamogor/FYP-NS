@@ -1,0 +1,13 @@
+{
+  "name": "door_n_s",
+  "length": 4,
+  "duration": [0, 0, 0, 0],
+  "posX": 0,
+  "posY": 0,
+  "loop": false,
+  "tile": {
+    "terrain": 2,
+    "blocks": false,
+    "lblocks": true
+  }
+}

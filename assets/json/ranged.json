@@ -1,0 +1,7 @@
+{
+  "name": "ranged",
+  "length": 2,
+  "type": 1,
+  "duration": [0.1,0.1],
+  "loop": true
+}

@@ -1,0 +1,7 @@
+{
+  "name": "player_idle",
+  "length": 4,
+  "type": 1,
+  "duration": [0.25,0.25,0.25,0.25],
+  "loop": true
+}

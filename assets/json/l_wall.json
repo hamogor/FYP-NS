@@ -1,0 +1,13 @@
+{
+  "name": "l_wall",
+  "length": 16,
+  "duration": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  "posX": 0,
+  "posY": 0,
+  "loop": false,
+  "tile": {
+    "terrain": 0,
+    "blocks": true,
+    "lblocks": true
+  }
+}
