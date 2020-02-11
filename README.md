@@ -1,6 +1,6 @@
 # Null Spire
 
-###Races:
+### Races:
 1. Ikthah - #42963f // Advanced Aliens
 2. Cobalt Clan - #0c4475 + #3b94c0 // Mercs
 3. (The) Null
