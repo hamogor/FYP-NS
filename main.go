@@ -12,14 +12,19 @@ type Game struct {
 	Level  *Level
 	Player *Player
 	Ai     *Ai
+	Ui     *Ui
 }
 
 func initialiseGame() *Game {
 	g := &Game{}
 	g.buildAssets()
-	g.initPlayer()
+
 	g.initRender()
+	g.initPlayer()
 	g.initLevel()
+	g.initUi()
+	g.initData()
+
 	return g
 }
 

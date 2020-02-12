@@ -4,6 +4,7 @@ type Actor struct {
 	Name        string
 	Pos         Position
 	Anims       map[string]*Animation
+	Fov         *FovMap
 	CAnim       *CAnim
 	ActionTaken bool
 	Direction   float64

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/faiface/pixel/pixelgl"
+	"os"
 )
 
 func (g *Game) handleInput() {
@@ -47,8 +48,13 @@ func (g *Game) handleInput() {
 		g.Player.Actor.ActionTaken = true
 	}
 
-	if g.Player.Actor.ActionTaken {
+	if g.Render.Window.JustPressed(pixelgl.KeyEscape) {
+		os.Exit(0)
+	}
 
+	if g.Player.Actor.ActionTaken {
+		g.Player.Actor.calculateFov()
+		g.Player.updateMiniMap(g.Level, g.Ui)
 	}
 
 }

@@ -1,32 +1,46 @@
 package main
 
-import "github.com/faiface/pixel"
+import (
+	"github.com/faiface/pixel"
+)
 
 type Level struct {
 	Tiles [LevelW][LevelH]*Tile
 	Spawn Position
+	Rooms []Rectangle
 }
 
 // Objective per floor, can't go to next without completing.
 func (g *Game) initLevel() {
+	d := NewDungeon(LevelW, 50)
 	l := &Level{
 		Tiles: [LevelW][LevelH]*Tile{},
 		Spawn: Position{},
+		Rooms: d.Rooms,
 	}
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
-			l.Tiles[x][y] = floor()
-			if y == 0 || y == LevelH-1 {
+			if d.Grid[x][y] == 1 {
+				l.Tiles[x][y] = floor()
+			} else if d.Grid[x][y] == 0 {
 				l.Tiles[x][y] = wall()
-			}
-			if x == 0 || x == LevelW-1 {
-				l.Tiles[x][y]= wall()
 			}
 		}
 	}
-	//21 22 23
-	//10 11 12
-	//00 01 02
+	l.Spawn = l.Rooms[0].center()
+	//for x := 0; x < LevelW; x++ {
+	//	for y := 0; y < LevelH; y++ {
+	//		l.Tiles[x][y] = floor()
+	//		if y == 0 || y == LevelH-1 {
+	//			l.Tiles[x][y] = wall()
+	//		}
+	//		if x == 0 || x == LevelW-1 {
+	//			l.Tiles[x][y]= wall()
+	//		}
+	//	}
+	//}
+
+
 
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
@@ -71,4 +85,8 @@ func (g *Game) initLevel() {
 		}
 	}
 	g.Level = l
+
 }
+
+
+

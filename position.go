@@ -1,6 +1,8 @@
 package main
 
-import "github.com/faiface/pixel"
+import (
+	"github.com/faiface/pixel"
+)
 
 type Position struct {
 	X, Y int
@@ -47,6 +49,10 @@ func (pos Position) inLevel() bool {
 		return false
 	}
 	return true
+}
+
+func (r *Render) mouseTranslate() Position {
+	return Position{}
 }
 
 func tilePos(x, y int) pixel.Matrix {

@@ -45,5 +45,5 @@ const (
 	Scaled           = 1
 	TileW, TileH     = 32, 48
 	SpriteW, SpriteH = 32, 48
-	LevelW, LevelH   = 64, 64
+	LevelW, LevelH   = 40, 40
 )

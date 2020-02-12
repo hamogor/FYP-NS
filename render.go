@@ -4,7 +4,6 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
-	"golang.org/x/image/colornames"
 	"image/color"
 	"log"
 	"math"
@@ -53,8 +52,6 @@ func (g *Game) initRender() {
 			Batch:  pixel.NewBatch(&pixel.TrianglesData{}, g.Assets.Sheets.Sprites),
 			Canvas: pixelgl.NewCanvas(pixel.R(-WWidth/2, -WHeight/2, WWidth/2, WHeight/2)),
 		},
-		Camera: g.Player.Actor.Pos.sToVec(),
-		Ui:     nil,
 	}
 	g.Render = r
 }
@@ -62,7 +59,12 @@ func (g *Game) initRender() {
 func (g *Game) render() {
 	g.Render.Env.Batch.Clear()
 	g.Render.Actors.Batch.Clear()
-	g.Render.Env.Canvas.Clear(colornames.Gray)
+	g.Render.Env.Canvas.Clear(color.RGBA{
+		R: 16,
+		G: 10,
+		B: 11,
+		A: 255,
+	})
 	g.Render.Actors.Canvas.Clear(color.Transparent)
 	g.Render.Ui = g.Render.Ui[:0]
 
@@ -72,8 +74,9 @@ func (g *Game) render() {
 	g.Render.Env.Batch.SetMatrix(cam)
 	g.Render.Actors.Batch.SetMatrix(cam)
 
-	g.Render.renderEnvironment(g.Level)
+	g.Render.renderEnvironment(g.Level, g.Player)
 	g.Render.renderActors(g.Player, g.Level, g.Assets)
+
 
 	g.Render.Env.Batch.Draw(g.Render.Env.Canvas)
 	g.Render.Actors.Batch.Draw(g.Render.Actors.Canvas)
@@ -84,6 +87,7 @@ func (g *Game) render() {
 	g.Render.Env.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
 	g.Render.Actors.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
 
+	g.Render.renderMiniMap(g.Player, g.Ui)
 	g.Render.Window.Update()
 }
 
@@ -93,10 +97,22 @@ func (r *Render) renderActors(p *Player, l *Level, a *Assets) {
 	p.Actor.CAnim.Sprite.Draw(r.Actors.Batch, pixel.IM.ScaledXY(pixel.ZV, pixel.V(-p.Actor.Direction, 1)).Moved(p.Actor.Pos.sToVec()))
 }
 
-func (r *Render) renderEnvironment(l *Level) {
+func (r *Render) renderEnvironment(l *Level, p *Player) {
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
-			l.Tiles[x][y].Sprites.L.Draw(r.Env.Batch, tilePos(x, y))
+			if p.Actor.Fov.Look(x, y) {
+				l.Tiles[x][y].Sprites.L.Draw(r.Env.Batch, tilePos(x, y))
+				p.Actor.Fov.explored[x][y] = true
+			} else if p.Actor.Fov.explored[x][y] {
+				l.Tiles[x][y].Sprites.D.Draw(r.Env.Batch, tilePos(x, y))
+			}
+
 		}
 	}
+}
+
+func (r *Render) renderMiniMap(p *Player, ui *Ui) {
+	tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
+	ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
+	ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(3, 3)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
 }

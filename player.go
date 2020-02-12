@@ -11,3 +11,5 @@ func (g *Game) initPlayer() {
 		Depth: 0,
 	}
 }
+
+
