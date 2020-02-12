@@ -7,21 +7,45 @@ import (
 )
 
 type Ui struct {
-	MiniMap MiniMap
+	MiniMap  MiniMap
+	MenuBar  MenuBar
+	Portrait Portrait
 }
 
 type MiniMap struct {
-	Sprite *pixel.Sprite
-	Msprite *pixel.Sprite
-	Map    *image.RGBA
+	Sprite  *pixel.Sprite // Box sprite
+	Msprite *pixel.Sprite // Map sprite
+	Map     *image.RGBA   // Map pixels
 }
 
-func (g *Game) initUi(){
+type MenuBar struct {
+	LSprite *pixel.Sprite // Left side
+	RSprite *pixel.Sprite // Right side
+	Sprite  *pixel.Sprite // Inbetween
+}
+
+type Portrait struct {
+	Sprite *pixel.Sprite
+}
+
+func (g *Game) initUi() {
 	mapSprite := GetPixelPicture("./assets/png/minimap.png")
+	barSprite := GetPixelPicture("./assets/png/bar.png")
+	lBarSprite := GetPixelPicture("./assets/png/l_bar.png")
+	rBarSprite := GetPixelPicture("./assets/png/r_bar.png")
+	portraitSprite := GetPixelPicture("./assets/png/portrait.png")
 	ui := &Ui{
 		MiniMap: MiniMap{
 			Sprite: pixel.NewSprite(mapSprite, mapSprite.Bounds()),
 			Map:    image.NewRGBA(image.Rect(0, 0, LevelW, LevelH)),
+		},
+		MenuBar: MenuBar{
+			LSprite: pixel.NewSprite(lBarSprite, lBarSprite.Bounds()),
+			Sprite:  pixel.NewSprite(barSprite, barSprite.Bounds()),
+			RSprite: pixel.NewSprite(rBarSprite, rBarSprite.Bounds()),
+		},
+		Portrait: Portrait{
+			Sprite: pixel.NewSprite(portraitSprite, portraitSprite.Bounds()),
 		},
 	}
 	g.Ui = ui
@@ -51,5 +75,4 @@ func (p *Player) updateMiniMap(l *Level, ui *Ui) {
 	ui.MiniMap.Map.Set(p.Actor.Pos.X, p.Actor.Pos.Y, color.RGBA{R: 64, G: 136, B: 72, A: 255})
 	minimapImage := pixel.PictureDataFromImage(ui.MiniMap.Map)
 	ui.MiniMap.Msprite = pixel.NewSprite(minimapImage, minimapImage.Rect)
-
 }

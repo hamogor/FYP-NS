@@ -2,6 +2,7 @@ package main
 
 type Actor struct {
 	Name        string
+	HP          int
 	Pos         Position
 	Anims       map[string]*Animation
 	Fov         *FovMap
@@ -21,5 +22,6 @@ func newPlayerActor(name string, pos Position, a *Assets) *Actor {
 		Anims:     anims,
 		CAnim:     buildCAnim(),
 		Direction: -1,
+		HP:        50,
 	}
 }

@@ -40,8 +40,6 @@ func (g *Game) initLevel() {
 	//	}
 	//}
 
-
-
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
 			pos := Position{X: x, Y: y}
@@ -62,6 +60,7 @@ func (g *Game) initLevel() {
 					bitmask += 8
 				}
 
+				l.Tiles[x][y].Bitmask = bitmask
 				l.Tiles[x][y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["l_wall"][bitmask])
 				l.Tiles[x][y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["d_wall"][bitmask])
 
@@ -79,6 +78,7 @@ func (g *Game) initLevel() {
 				if pos.W().terrain(l) == Wall {
 					bitmask += 8
 				}
+				l.Tiles[x][y].Bitmask = bitmask
 				l.Tiles[x][y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["l_floor"][bitmask])
 				l.Tiles[x][y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["d_floor"][bitmask])
 			}
@@ -87,6 +87,3 @@ func (g *Game) initLevel() {
 	g.Level = l
 
 }
-
-
-

@@ -6,7 +6,7 @@ type Tile struct {
 	Terrain Terrain
 	Sprites Sprites
 	Blocks  bool
-	Bitmask  int
+	Bitmask int
 }
 
 type Sprites struct {
@@ -19,6 +19,8 @@ type Terrain int
 const (
 	Wall Terrain = iota
 	Floor
+	Door
+	OpenDoor
 	NilTerrain
 )
 
@@ -36,7 +38,7 @@ func floor() *Tile {
 		Terrain: Floor,
 		Sprites: Sprites{},
 		Blocks:  false,
-		Bitmask:  0,
+		Bitmask: 0,
 	}
 }
 
@@ -45,6 +47,15 @@ func wall() *Tile {
 		Terrain: Wall,
 		Sprites: Sprites{},
 		Blocks:  true,
-		Bitmask:  0,
+		Bitmask: 0,
+	}
+}
+
+func door() *Tile {
+	return &Tile{
+		Terrain: Door,
+		Sprites: Sprites{},
+		Blocks:  true,
+		Bitmask: 0,
 	}
 }

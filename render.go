@@ -4,6 +4,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	"image/color"
 	"log"
 	"math"
@@ -77,7 +78,6 @@ func (g *Game) render() {
 	g.Render.renderEnvironment(g.Level, g.Player)
 	g.Render.renderActors(g.Player, g.Level, g.Assets)
 
-
 	g.Render.Env.Batch.Draw(g.Render.Env.Canvas)
 	g.Render.Actors.Batch.Draw(g.Render.Actors.Canvas)
 
@@ -87,7 +87,7 @@ func (g *Game) render() {
 	g.Render.Env.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
 	g.Render.Actors.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
 
-	g.Render.renderMiniMap(g.Player, g.Ui)
+	g.Render.renderUi(g.Player, g.Ui)
 	g.Render.Window.Update()
 }
 
@@ -111,8 +111,51 @@ func (r *Render) renderEnvironment(l *Level, p *Player) {
 	}
 }
 
+func (r *Render) renderUi(p *Player, ui *Ui) {
+	r.renderMiniMap(p, ui)
+	r.renderBar(ui)
+	r.renderPortrait(ui) // Top of bar
+	r.renderHealthBar(ui, p)
+}
+
 func (r *Render) renderMiniMap(p *Player, ui *Ui) {
 	tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
 	ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
 	ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(3, 3)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
+}
+
+func (r *Render) renderBar(ui *Ui) {
+	ui.MenuBar.LSprite.Draw(r.Window, pixel.IM.Moved(pixel.V(ui.MenuBar.LSprite.Frame().Max.X, ui.MenuBar.LSprite.Frame().Max.Y/2)))
+	ui.MenuBar.RSprite.Draw(r.Window, pixel.IM.Moved(pixel.V(WWidth-ui.MenuBar.RSprite.Frame().Max.X, ui.MenuBar.RSprite.Frame().Max.Y/2)))
+	mat := pixel.IM
+	mat = mat.ScaledXY(pixel.ZV, pixel.V(WWidth-(ui.MenuBar.LSprite.Frame().Max.X+ui.MenuBar.RSprite.Frame().Max.X)-10, 1))
+	mat = mat.Moved(pixel.V(WWidth/2, ui.MenuBar.Sprite.Frame().Max.Y/2))
+	ui.MenuBar.Sprite.Draw(r.Window, mat)
+}
+
+func (r *Render) renderPortrait(ui *Ui) {
+	blOfBar := pixel.V(ui.MenuBar.LSprite.Frame().Max.X+ui.Portrait.Sprite.Frame().Max.X+10, ui.MenuBar.LSprite.Frame().Max.Y/2)
+	ui.Portrait.Sprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).Moved(blOfBar))
+}
+
+func (r *Render) renderHealthBar(ui *Ui, p *Player) {
+	red := imdraw.New(nil)
+	red.Clear()
+
+	red.Color = colornames.Darkred
+	red.Push(pixel.V(100, 60))
+	red.Push(pixel.V(300, 70))
+	red.Rectangle(0)
+	red.Draw(r.Window)
+
+
+	green := imdraw.New(nil)
+	green.Clear()
+	percentHP := float64(p.Actor.HP) / float64(100) * 200
+	green.Color = colornames.Forestgreen
+	green.Push(pixel.V(100, 60))
+	green.Push(pixel.V(100+percentHP, 70))
+	green.Rectangle(0)
+	green.Draw(r.Window)
+
 }

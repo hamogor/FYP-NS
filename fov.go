@@ -66,8 +66,6 @@ func InitFovs() []*FovMap {
 	return fovs
 }
 
-
-
 func (f *FovMap) Fov(pos Position, radius int, includeWalls bool, algo FOVAlgo) {
 	for y := 0; y < f.h; y++ {
 		for x := 0; x < f.w; x++ {
