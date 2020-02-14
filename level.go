@@ -30,7 +30,7 @@ func (g *Game) initLevel() {
 			if y == 0 || y == LevelH-1 {
 				l.Tiles[x][y] = wall()
 			}
-			if x == 0 || x == LevelW - 1 {
+			if x == 0 || x == LevelW-1 {
 				l.Tiles[x][y] = wall()
 			}
 		}
@@ -61,10 +61,7 @@ func (g *Game) initLevel() {
 				l.Tiles[x][y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["l_wall"][bitmask])
 				l.Tiles[x][y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["d_wall"][bitmask])
 
-
-
-			} else
-			if pos.terrain(l) == Floor {
+			} else if pos.terrain(l) == Floor {
 				bitmask := 0
 				if pos.S().terrain(l) == Wall {
 					bitmask += 1
@@ -86,6 +83,24 @@ func (g *Game) initLevel() {
 		}
 	}
 
+	for x := 0; x < LevelW; x++ {
+		for y := 0; y < LevelH; y++ {
+			pos := Position{X: x, Y: y}
+			if pos.cardinalWalls(l) {
+				if pos.SW().floor(l) && pos.NW().wall(l) && pos.NE().wall(l) && pos.SE().wall(l) {
+					l.Tiles[x][y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["l_wall"][16])
+					l.Tiles[x][y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["d_wall"][16])
+
+				}
+				if pos.cardinalWalls(l) {
+					if pos.NW().wall(l) && pos.SE().wall(l) && pos.SW().floor(l) && pos.NE().floor(l) {
+						l.Tiles[x][y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["l_wall"][17])
+						l.Tiles[x][y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["d_wall"][17])
+					}
+				}
+			}
+		}
+	}
 
 	//for y := 0; y < LevelH; y++ {
 	//	for x := 0; x < LevelW; x++ {
@@ -97,8 +112,6 @@ func (g *Game) initLevel() {
 	//	}
 	//	fmt.Println()
 	//}
-
-
 
 	g.Level = l
 }

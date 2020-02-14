@@ -20,9 +20,6 @@ var (
 	WHeight               float64 = 768
 	WWidth                float64 = 1024
 	tilePaths                     = []string{
-		"/dmap_colors",
-		"/door",
-		"/door_open",
 		"/l_wall",
 		"/d_wall",
 		"/l_floor",
@@ -33,11 +30,7 @@ var (
 		"/door_w_e",
 	}
 	spritePaths = []string{ // Name and filename of sprite assets
-		//"/player",
 		"/player_idle",
-		//"/ranged",
-		//"/move",
-		//"/flank",
 	}
 )
 

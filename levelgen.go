@@ -66,7 +66,7 @@ type Dungeon struct {
 	Regions                                    []int
 	Bounds                                     Rectangle
 	Rand                                       Randomizer
-	Doors 									   []Position
+	Doors                                      []Position
 }
 
 func NewDungeon(size, rooms int) *Dungeon {

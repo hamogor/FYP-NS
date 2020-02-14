@@ -148,7 +148,6 @@ func (r *Render) renderHealthBar(ui *Ui, p *Player) {
 	red.Rectangle(0)
 	red.Draw(r.Window)
 
-
 	green := imdraw.New(nil)
 	green.Clear()
 	percentHP := float64(p.Actor.HP) / float64(100) * 200
