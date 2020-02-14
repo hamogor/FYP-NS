@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 )
 
@@ -37,17 +36,6 @@ func (g *Game) initLevel() {
 		}
 	}
 	l.Spawn = l.Rooms[0].center()
-	//for x := 0; x < LevelW; x++ {
-	//	for y := 0; y < LevelH; y++ {
-	//		l.Tiles[x][y] = floor()
-	//		if y == 0 || y == LevelH-1 {
-	//			l.Tiles[x][y] = wall()
-	//		}
-	//		if x == 0 || x == LevelW-1 {
-	//			l.Tiles[x][y]= wall()
-	//		}
-	//	}
-	//}
 
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
@@ -75,7 +63,8 @@ func (g *Game) initLevel() {
 
 
 
-			} else if pos.terrain(l) == Floor {
+			} else
+			if pos.terrain(l) == Floor {
 				bitmask := 0
 				if pos.S().terrain(l) == Wall {
 					bitmask += 1
@@ -97,35 +86,17 @@ func (g *Game) initLevel() {
 		}
 	}
 
-	for x := 0; x < LevelW; x++ {
-		for y := 0; y < LevelH; y++ {
-			if l.Tiles[x][y].Bitmask == 15 {
-				pos := Position{X: x, Y: y}
 
-				if pos.S().bitmask(l) == 13 && pos.E().bitmask(l) == 14 {
-					pos.setWallBitmask(g.Assets, l, 17)
-				}
-
-				if pos.S().bitmask(l) == 5 || pos.S().bitmask(l) == 7 || pos.S().bitmask(l) == 4 && pos.E().bitmask(l) == 14 {
-					pos.setWallBitmask(g.Assets, l, 16)
-				}
-			}
-		}
-	}
-
-
-
-
-	for y := 0; y < LevelH; y++ {
-		for x := 0; x < LevelW; x++ {
-			if l.Tiles[x][y].Terrain == Wall {
-				fmt.Print(l.Tiles[x][y].Bitmask, " ")
-			} else {
-				fmt.Print(" . ")
-			}
-		}
-		fmt.Println()
-	}
+	//for y := 0; y < LevelH; y++ {
+	//	for x := 0; x < LevelW; x++ {
+	//		if l.Tiles[x][y].Terrain == Wall {
+	//			fmt.Print(l.Tiles[x][y].Bitmask, " ")
+	//		} else {
+	//			fmt.Print(" . ")
+	//		}
+	//	}
+	//	fmt.Println()
+	//}
 
 
 
@@ -154,4 +125,14 @@ func (pos Position) placeDoorIfPossible(l *Level, a *Assets) {
 func (pos Position) setWallBitmask(a *Assets, l *Level, bit int) {
 	l.Tiles[pos.X][pos.Y].Sprites.L = pixel.NewSprite(a.Sheets.Environment, a.Env["l_wall"][bit])
 	l.Tiles[pos.X][pos.Y].Sprites.D = pixel.NewSprite(a.Sheets.Environment, a.Env["d_wall"][bit])
+}
+
+func BoolListToMask(bit []bool) int {
+	var n int
+	for i, r := range bit {
+		if r {
+			n += 1 << (8 - i - 1)
+		}
+	}
+	return n
 }

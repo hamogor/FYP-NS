@@ -88,6 +88,7 @@ func NewDungeon(size, rooms int) *Dungeon {
 		Rand:     rand.New(rand.NewSource(time.Now().Unix())),
 	}
 	dungeon.Generate()
+	dungeon.Print()
 	return dungeon
 }
 
