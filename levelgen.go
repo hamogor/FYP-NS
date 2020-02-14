@@ -66,6 +66,7 @@ type Dungeon struct {
 	Regions                                    []int
 	Bounds                                     Rectangle
 	Rand                                       Randomizer
+	Doors 									   []Position
 }
 
 func NewDungeon(size, rooms int) *Dungeon {
@@ -126,7 +127,6 @@ func (d *Dungeon) AddRoom() {
 		h := RandInt(d.MinSize, d.MaxSize, d.Rand)
 		x := RandInt(1, d.Size-w-1, d.Rand)
 		y := RandInt(1, d.Size-w-1, d.Rand)
-
 		rect := Rectangle{X: x, Y: y, Width: w, Height: h}
 		bounds := Rectangle{X: x - 1, Y: y - 1, Width: w + 2, Height: h + 2}
 
@@ -295,15 +295,19 @@ func (d *Dungeon) Generate() {
 					intersect.Height -= 2
 				} else if intersect.Width*intersect.Height == 2 {
 					d.CarveRect(intersect, 1)
+					d.Doors = append(d.Doors, Position{X: intersect.X, Y: intersect.Y})
 					continue
 				} else {
 					continue
 				}
-
+				x := RandInt(intersect.X, intersect.X+intersect.Width, d.Rand)
+				y := RandInt(intersect.Y, intersect.Y+intersect.Height, d.Rand)
 				d.CarvePoint(Point{
-					X: RandInt(intersect.X, intersect.X+intersect.Width, d.Rand),
-					Y: RandInt(intersect.Y, intersect.Y+intersect.Height, d.Rand),
+					X: x,
+					Y: y,
 				}, 1)
+				d.Doors = append(d.Doors, Position{X: x, Y: y})
+
 			}
 
 		}

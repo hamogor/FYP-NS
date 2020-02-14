@@ -30,7 +30,13 @@ func (pos Position) terrain(l *Level) Terrain {
 	} else {
 		return NilTerrain
 	}
+}
 
+func (pos Position) bitmask(l *Level) int {
+	if pos.inLevel() {
+		return l.Tiles[pos.X][pos.Y].Bitmask
+	}
+	return 0
 }
 
 func floor() *Tile {
