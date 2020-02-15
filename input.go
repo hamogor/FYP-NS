@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel/pixelgl"
 	"os"
 )
@@ -55,6 +56,12 @@ func (g *Game) handleInput() {
 	if g.Player.Actor.ActionTaken {
 		g.Player.Actor.calculateFov()
 		g.Player.updateMiniMap(g.Level, g.Ui)
+		//fmt.Print(g.Player.Actor.Pos.W().W().terrain(g.Level), "\n")
+		fmt.Print("NN: ", g.Player.Actor.Pos.N().N().terrain(g.Level),
+			" SS: ", g.Player.Actor.Pos.S().S().terrain(g.Level),
+			" EE: ", g.Player.Actor.Pos.E().E().terrain(g.Level),
+			" WW: ", g.Player.Actor.Pos.W().W().terrain(g.Level),
+			" Pos: ", g.Player.Actor.Pos, "\n")
 	}
 
 }

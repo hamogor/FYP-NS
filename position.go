@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 )
 
@@ -67,10 +68,16 @@ func (pos Position) sToVec() pixel.Vec {
 }
 
 func (pos Position) wall(l *Level) bool {
-	if l.Tiles[pos.X][pos.Y].Terrain == Wall {
-		return true
+	if pos.inLevel() {
+		fmt.Print(pos, "\n")
+		if l.Tiles[pos.X][pos.Y].Terrain == Wall {
+			return true
+		} else {
+			return false // Handles edge bitmask
+		}
 	}
-	return false
+
+	return true
 }
 
 func (pos Position) floor(l *Level) bool {
@@ -83,8 +90,9 @@ func (pos Position) floor(l *Level) bool {
 func (pos Position) inLevel() bool {
 	if pos.X < 0 || pos.Y < 0 || pos.X >= LevelW || pos.Y >= LevelH {
 		return false
+	} else {
+		return true
 	}
-	return true
 }
 
 func (r *Render) mouseTranslate() Position {

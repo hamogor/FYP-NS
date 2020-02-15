@@ -61,6 +61,9 @@ func (p *Player) updateMiniMap(l *Level, ui *Ui) {
 				if l.Tiles[x][y].Terrain == Floor {
 					ui.MiniMap.Map.Set(x, y, color.RGBA{R: 57, G: 68, B: 100, A: 255})
 				}
+				if l.Tiles[x][y].Terrain == Door {
+					ui.MiniMap.Map.Set(x, y, color.RGBA{R:209, G:119, B:8, A:255})
+				}
 
 			} else if p.Actor.Fov.explored[x][y] {
 				if l.Tiles[x][y].Terrain == Wall {
