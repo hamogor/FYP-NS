@@ -13,17 +13,19 @@ type Ui struct {
 	MainMenu MainMenu
 }
 
-
+type buttonHandler func(s *Scenes)
 
 type MainMenu struct {
 	Background *pixel.Sprite
-	Buttons []Button
+	StartButton Button
 }
 
 type Button struct {
-	Pos pixel.Matrix
+	Pos pixel.Rect
 	Sprite *pixel.Sprite
-	Handler func()
+	HSprite *pixel.Sprite
+	Handler buttonHandler
+	Hovering bool
 }
 
 type MiniMap struct {
@@ -49,6 +51,8 @@ func (g *Game) initUi() {
 	rBarSprite := GetPixelPicture("./assets/png/r_bar.png")
 	portraitSprite := GetPixelPicture("./assets/png/portrait.png")
 	mainMenuSprite := GetPixelPicture("./assets/bg/island_2.png")
+	startButtonSprite := GetPixelPicture("./assets/png/start_btn.png")
+	startButtonHSprite := GetPixelPicture("./assets/png/start_btn_hover.png")
 	ui := &Ui{
 		MiniMap: MiniMap{
 			Sprite: pixel.NewSprite(mapSprite, mapSprite.Bounds()),
@@ -64,7 +68,12 @@ func (g *Game) initUi() {
 		},
 		MainMenu: MainMenu{
 			Background: pixel.NewSprite(mainMenuSprite, mainMenuSprite.Bounds()),
-			Buttons:    nil,
+			StartButton:    Button{
+				Pos:     pixel.Rect{},
+				Sprite:  pixel.NewSprite(startButtonSprite, startButtonSprite.Bounds()),
+				HSprite: pixel.NewSprite(startButtonHSprite, startButtonHSprite.Bounds()),
+				Handler: startButton,
+			},
 		},
 	}
 	g.Ui = ui
@@ -98,3 +107,13 @@ func (p *Player) updateMiniMap(l *Level, ui *Ui) {
 	minimapImage := pixel.PictureDataFromImage(ui.MiniMap.Map)
 	ui.MiniMap.Msprite = pixel.NewSprite(minimapImage, minimapImage.Rect)
 }
+
+func startButton(s *Scenes) {
+	if s.CurrentScene == MainMenuScene {
+		s.CurrentScene = GameScene
+	} else if s.CurrentScene == GameScene {
+		s.CurrentScene = MainMenuScene
+	}
+}
+
+

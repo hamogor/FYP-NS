@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -176,6 +177,13 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 	if s.ActiveElements[MainMenuActive] {
 		w, h :=  WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
+		ui.MainMenu.StartButton.Pos = pixel.R(380, 220, ui.MainMenu.StartButton.Pos.Max.X*2, ui.MainMenu.StartButton.Pos.Max.Y*2)
+		if ui.MainMenu.StartButton.Hovering {
+			ui.MainMenu.StartButton.HSprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
+		} else {
+			ui.MainMenu.StartButton.Sprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
+		}
 	}
-
+	w, h :=  WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
+	fmt.Print(r.Window.MousePosition().Project(pixel.V(w, h)), "\n")
 }
