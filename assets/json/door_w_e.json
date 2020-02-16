@@ -7,7 +7,7 @@
   "loop": false,
   "tile": {
     "terrain": 2,
-    "blocks": false,
+    "blocks": true,
     "lblocks": true
   }
 }

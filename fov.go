@@ -35,6 +35,8 @@ func initFov(l *Level) *FovMap {
 				fov.Block(x, y, true)
 			} else if pos.terrain(l) == Floor {
 				fov.Block(x, y, false)
+			} else if pos.terrain(l) == Door {
+				fov.Block(x, y, true)
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 )
 
@@ -69,7 +68,6 @@ func (pos Position) sToVec() pixel.Vec {
 
 func (pos Position) wall(l *Level) bool {
 	if pos.inLevel() {
-		fmt.Print(pos, "\n")
 		if l.Tiles[pos.X][pos.Y].Terrain == Wall {
 			return true
 		} else {

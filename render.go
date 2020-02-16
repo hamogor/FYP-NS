@@ -61,9 +61,9 @@ func (g *Game) render() {
 	g.Render.Env.Batch.Clear()
 	g.Render.Actors.Batch.Clear()
 	g.Render.Env.Canvas.Clear(color.RGBA{
-		R: 16,
-		G: 10,
-		B: 11,
+		R: 8,
+		G: 8,
+		B: 12,
 		A: 255,
 	})
 	g.Render.Actors.Canvas.Clear(color.Transparent)
