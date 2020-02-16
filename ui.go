@@ -10,6 +10,20 @@ type Ui struct {
 	MiniMap  MiniMap
 	MenuBar  MenuBar
 	Portrait Portrait
+	MainMenu MainMenu
+}
+
+
+
+type MainMenu struct {
+	Background *pixel.Sprite
+	Buttons []Button
+}
+
+type Button struct {
+	Pos pixel.Matrix
+	Sprite *pixel.Sprite
+	Handler func()
 }
 
 type MiniMap struct {
@@ -34,6 +48,7 @@ func (g *Game) initUi() {
 	lBarSprite := GetPixelPicture("./assets/png/l_bar.png")
 	rBarSprite := GetPixelPicture("./assets/png/r_bar.png")
 	portraitSprite := GetPixelPicture("./assets/png/portrait.png")
+	mainMenuSprite := GetPixelPicture("./assets/bg/island_2.png")
 	ui := &Ui{
 		MiniMap: MiniMap{
 			Sprite: pixel.NewSprite(mapSprite, mapSprite.Bounds()),
@@ -46,6 +61,10 @@ func (g *Game) initUi() {
 		},
 		Portrait: Portrait{
 			Sprite: pixel.NewSprite(portraitSprite, portraitSprite.Bounds()),
+		},
+		MainMenu: MainMenu{
+			Background: pixel.NewSprite(mainMenuSprite, mainMenuSprite.Bounds()),
+			Buttons:    nil,
 		},
 	}
 	g.Ui = ui

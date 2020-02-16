@@ -13,6 +13,7 @@ type Game struct {
 	Player *Player
 	Ai     *Ai
 	Ui     *Ui
+	Scenes *Scenes
 }
 
 func initialiseGame() *Game {
@@ -24,7 +25,7 @@ func initialiseGame() *Game {
 	g.initLevel()
 	g.initUi()
 	g.initData()
-
+	g.initScenes()
 	return g
 }
 

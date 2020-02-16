@@ -18,7 +18,7 @@ var (
 	second                        = time.Tick(time.Second)
 	last                          = time.Now()
 	WHeight               float64 = 768
-	WWidth                float64 = 1024
+	WWidth                float64 = 1366
 	tilePaths                     = []string{
 		"/l_wall",
 		"/d_wall",
