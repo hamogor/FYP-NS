@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -177,13 +176,14 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 	if s.ActiveElements[MainMenuActive] {
 		w, h :=  WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
-		ui.MainMenu.StartButton.Pos = pixel.R(380, 220, ui.MainMenu.StartButton.Pos.Max.X*2, ui.MainMenu.StartButton.Pos.Max.Y*2)
+		mat := pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220))
 		if ui.MainMenu.StartButton.Hovering {
 			ui.MainMenu.StartButton.HSprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
 		} else {
 			ui.MainMenu.StartButton.Sprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
 		}
+		ui.MainMenu.StartButton.Pos = pixel.R(mat[2]-ui.MainMenu.StartButton.Sprite.Frame().Min.X, mat[5]-ui.MainMenu.StartButton.Sprite.Frame().Min.Y,
+			mat[2]+ui.MainMenu.StartButton.Sprite.Frame().Max.X, mat[5]+ui.MainMenu.StartButton.Sprite.Frame().Max.Y)
 	}
-	w, h :=  WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
-	fmt.Print(r.Window.MousePosition().Project(pixel.V(w, h)), "\n")
+	//fmt.Print(ui.MainMenu.StartButton.Pos, "\n")
 }

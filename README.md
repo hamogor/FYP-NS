@@ -17,6 +17,15 @@ Maybe create a new animation type that has an initial and final sprite.
 Need to be able to access each room to place assets
 
 ### Ui:
+"do you not just invert the matrix to transform screen to world for a 2x3?"
+
+Laplace expansion, turn 2x3 matrix into 3x3, then invert it, then multiply mouse
+vector by the inverse transform matrix, then check if the result is inside image
+
+a= 2.854, b = 0, c = 380 etc etc
 
 ### RPG Elements:
+
+### Font:
+LECO_2014_Alt_Regular (in windows appdata)
 
