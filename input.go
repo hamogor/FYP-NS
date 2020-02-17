@@ -51,16 +51,16 @@ func (g *Game) handleInput() {
 
 
 	if g.Scenes.CurrentScene == MainMenuScene {
-			mouse := g.Render.Window.MousePosition()
-			if mouse.X > 163 && mouse.X < 589 &&
-				mouse.Y > 181 && mouse.Y < 275 {
-				g.Ui.MainMenu.StartButton.Hovering = true
-			} else {
-				g.Ui.MainMenu.StartButton.Hovering = false
-			}
-			if g.Ui.MainMenu.StartButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
-				startButton(g.Scenes)
-			}
+		mouse := g.Render.Window.MousePosition()
+		if mouse.X > 163 && mouse.X < 589 &&
+			mouse.Y > 181 && mouse.Y < 275 {
+			g.Ui.MainMenu.StartButton.Hovering = true
+		} else {
+			g.Ui.MainMenu.StartButton.Hovering = false
+		}
+		if g.Ui.MainMenu.StartButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
+			startButton(g.Scenes)
+		}
 	}
 
 

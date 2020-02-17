@@ -18,6 +18,7 @@ type buttonHandler func(s *Scenes)
 type MainMenu struct {
 	Background *pixel.Sprite
 	StartButton Button
+	Matrix pixel.Matrix
 }
 
 type Button struct {

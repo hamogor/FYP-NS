@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -17,11 +18,13 @@ type Render struct {
 	Actors Layer
 	Camera pixel.Vec
 	Ui     []*imdraw.IMDraw
+	Mouse  pixel.Vec
 }
 
 type Layer struct {
 	Batch  *pixel.Batch
 	Canvas *pixelgl.Canvas
+	Matrix pixel.Matrix
 }
 
 func (g *Game) initRender() {
@@ -48,13 +51,18 @@ func (g *Game) initRender() {
 		Env: Layer{
 			Batch:  pixel.NewBatch(&pixel.TrianglesData{}, g.Assets.Sheets.Environment),
 			Canvas: pixelgl.NewCanvas(pixel.R(-WWidth/2, -WHeight/2, WWidth/2, WHeight/2)),
+			Matrix: pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(pixel.V(WWidth/2, WHeight/2)),
 		},
 		Actors: Layer{
 			Batch:  pixel.NewBatch(&pixel.TrianglesData{}, g.Assets.Sheets.Sprites),
 			Canvas: pixelgl.NewCanvas(pixel.R(-WWidth/2, -WHeight/2, WWidth/2, WHeight/2)),
+			Matrix: pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(pixel.V(WWidth/2, WHeight/2)),
 		},
 	}
 	g.Render = r
+	g.Render.Env.Canvas.SetMatrix(g.Render.Env.Matrix)
+	g.Render.Actors.Canvas.SetMatrix(g.Render.Actors.Matrix)
+
 }
 
 func (g *Game) render() {
@@ -66,8 +74,11 @@ func (g *Game) render() {
 	g.Render.Actors.Canvas.Clear(color.Transparent)
 	g.Render.Ui = g.Render.Ui[:0]
 
+
+
 	g.Render.Camera = pixel.Lerp(g.Render.Camera, g.Player.Actor.Pos.sToVec(), 1-math.Pow(1.0/128, dt))
 	cam := pixel.IM.Moved(pixel.V(RoundFloat(g.Render.Camera.X), RoundFloat(g.Render.Camera.Y)).Scaled(-1))
+
 
 	g.Render.Env.Batch.SetMatrix(cam)
 	g.Render.Actors.Batch.SetMatrix(cam)
@@ -78,11 +89,13 @@ func (g *Game) render() {
 	g.Render.Env.Batch.Draw(g.Render.Env.Canvas)
 	g.Render.Actors.Batch.Draw(g.Render.Actors.Canvas)
 
-	g.Render.Env.Canvas.SetMatrix(pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(g.Render.Env.Canvas.Bounds().Center()))
-	g.Render.Actors.Canvas.SetMatrix(pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(g.Render.Actors.Canvas.Bounds().Center()))
+	canvasMatrix := pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(g.Render.Env.Canvas.Bounds().Center())
+	g.Render.Env.Canvas.SetMatrix(canvasMatrix)
+	g.Render.Actors.Canvas.SetMatrix(canvasMatrix)
 
-	g.Render.Env.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
-	g.Render.Actors.Canvas.Draw(g.Render.Window, pixel.IM.Moved(g.Render.Window.Bounds().Center()))
+	worldMatrix := pixel.IM.Moved(g.Render.Window.Bounds().Center())
+	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
+	g.Render.Actors.Canvas.Draw(g.Render.Window, worldMatrix)
 
 	g.Render.renderUi(g.Player, g.Ui, g.Scenes)
 	g.Render.Window.Update()
@@ -174,16 +187,22 @@ func (r *Render) renderHealthBar(ui *Ui, p *Player, s *Scenes) {
 
 func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 	if s.ActiveElements[MainMenuActive] {
-		w, h :=  WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
+		w, h := WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
-		mat := pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220))
+		center := r.Window.MousePosition()
+		center.X = center.X - WWidth * 0.5
+		center.Y = center.Y - WHeight * 0.5
+		fmt.Print(center, "\n")
 		if ui.MainMenu.StartButton.Hovering {
 			ui.MainMenu.StartButton.HSprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
 		} else {
 			ui.MainMenu.StartButton.Sprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
 		}
-		ui.MainMenu.StartButton.Pos = pixel.R(mat[2]-ui.MainMenu.StartButton.Sprite.Frame().Min.X, mat[5]-ui.MainMenu.StartButton.Sprite.Frame().Min.Y,
-			mat[2]+ui.MainMenu.StartButton.Sprite.Frame().Max.X, mat[5]+ui.MainMenu.StartButton.Sprite.Frame().Max.Y)
+		ScreenToWorldSpace(r, pixel.IM)
+
 	}
-	//fmt.Print(ui.MainMenu.StartButton.Pos, "\n")
+}
+
+func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
+	return mat.Project(r.Window.MousePosition())
 }
