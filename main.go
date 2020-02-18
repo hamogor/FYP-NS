@@ -20,12 +20,16 @@ func initialiseGame() *Game {
 	g := &Game{}
 	g.buildAssets()
 
+
+
 	g.initRender()
 	g.initPlayer()
 	g.initLevel()
 	g.initUi()
 	g.initData()
 	g.initScenes()
+
+	generateLevel(g) //TESTING
 	return g
 }
 

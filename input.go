@@ -78,6 +78,9 @@ func (g *Game) handleInput() {
 		if g.Ui.MainMenu.StartButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
 			startButton(g.Scenes)
 		}
+		if g.Ui.MainMenu.ExitButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
+			exitButton(g.Scenes)
+		}
 	}
 
 

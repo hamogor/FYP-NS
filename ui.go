@@ -4,6 +4,7 @@ import (
 	"github.com/faiface/pixel"
 	"image"
 	"image/color"
+	"os"
 )
 
 type Ui struct {
@@ -101,7 +102,7 @@ func (g *Game) initUi() {
 				Pos: pixel.Rect{},
 				Sprite: pixel.NewSprite(exitBtn, exitBtn.Bounds()),
 				HSprite: pixel.NewSprite(exitBtnHover, exitBtnHover.Bounds()),
-				Handler: nil,
+				Handler: exitButton,
 			},
 		},
 	}
@@ -142,6 +143,12 @@ func startButton(s *Scenes) {
 		s.CurrentScene = GameScene
 	} else if s.CurrentScene == GameScene {
 		s.CurrentScene = MainMenuScene
+	}
+}
+
+func exitButton(s *Scenes) {
+	if s.CurrentScene == MainMenuScene {
+		os.Exit(0)
 	}
 }
 
