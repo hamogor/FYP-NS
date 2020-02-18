@@ -52,8 +52,9 @@ func (g *Game) handleInput() {
 
 	if g.Scenes.CurrentScene == MainMenuScene {
 		mouse := g.Render.Window.MousePosition()
-		if mouse.X > 163 && mouse.X < 589 &&
-			mouse.Y > 181 && mouse.Y < 275 {
+		r := g.Ui.MainMenu.StartButton.Rect
+		if mouse.X > r.Min.X && mouse.X < r.Max.X &&
+			mouse.Y > r.Min.Y && mouse.Y < r.Max.Y {
 			g.Ui.MainMenu.StartButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.StartButton.Hovering = false

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -96,7 +95,6 @@ func (g *Game) render() {
 	worldMatrix := pixel.IM.Moved(g.Render.Window.Bounds().Center())
 	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.Actors.Canvas.Draw(g.Render.Window, worldMatrix)
-
 	g.Render.renderUi(g.Player, g.Ui, g.Scenes)
 	g.Render.Window.Update()
 }
@@ -189,20 +187,18 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 	if s.ActiveElements[MainMenuActive] {
 		w, h := WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
-		center := r.Window.MousePosition()
-		center.X = center.X - WWidth * 0.5
-		center.Y = center.Y - WHeight * 0.5
-		fmt.Print(center, "\n")
+		mat := pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h))
+		screenRect(mat, ui.MainMenu.StartButton.Sprite, r)
 		if ui.MainMenu.StartButton.Hovering {
-			ui.MainMenu.StartButton.HSprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
+			ui.MainMenu.StartButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.HSprite, percentW(22), percentH(65), 2, r, ui))
 		} else {
-			ui.MainMenu.StartButton.Sprite.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, 2).Moved(pixel.V(380, 220)))
+			ui.MainMenu.StartButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.Sprite, percentW(22), percentH(65), 2, r, ui))
 		}
-		ScreenToWorldSpace(r, pixel.IM)
+
 
 	}
 }
 
 func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
-	return mat.Project(r.Window.MousePosition())
+	return mat.Unproject(r.Window.MousePosition())
 }

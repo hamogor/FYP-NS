@@ -27,6 +27,7 @@ type Button struct {
 	HSprite *pixel.Sprite
 	Handler buttonHandler
 	Hovering bool
+	Rect pixel.Rect
 }
 
 type MiniMap struct {
