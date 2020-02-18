@@ -52,13 +52,29 @@ func (g *Game) handleInput() {
 
 	if g.Scenes.CurrentScene == MainMenuScene {
 		mouse := g.Render.Window.MousePosition()
-		r := g.Ui.MainMenu.StartButton.Rect
-		if mouse.X > r.Min.X && mouse.X < r.Max.X &&
-			mouse.Y > r.Min.Y && mouse.Y < r.Max.Y {
+		if g.Ui.MainMenu.StartButton.Rect.Contains(mouse) {
 			g.Ui.MainMenu.StartButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.StartButton.Hovering = false
 		}
+		if g.Ui.MainMenu.OptionsButton.Rect.Contains(mouse) {
+			g.Ui.MainMenu.OptionsButton.Hovering = true
+		} else {
+			g.Ui.MainMenu.OptionsButton.Hovering = false
+		}
+		if g.Ui.MainMenu.AboutButton.Rect.Contains(mouse) {
+			g.Ui.MainMenu.AboutButton.Hovering = true
+		} else {
+			g.Ui.MainMenu.AboutButton.Hovering = false
+		}
+		if g.Ui.MainMenu.ExitButton.Rect.Contains(mouse) {
+			g.Ui.MainMenu.ExitButton.Hovering = true
+		} else {
+			g.Ui.MainMenu.ExitButton.Hovering = false
+		}
+
+
+
 		if g.Ui.MainMenu.StartButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
 			startButton(g.Scenes)
 		}

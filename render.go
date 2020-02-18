@@ -189,10 +189,30 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
 		mat := pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h))
 		screenRect(mat, ui.MainMenu.StartButton.Sprite, r)
+		ui.MainMenu.Logo.Draw(r.Window, anchorTL(mat, ui.MainMenu.Logo, percentW(25), percentH(20), 5, &ui.MainMenu.StartButton))
+
 		if ui.MainMenu.StartButton.Hovering {
-			ui.MainMenu.StartButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.HSprite, percentW(22), percentH(65), 2, r, ui))
+			ui.MainMenu.StartButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.HSprite, percentW(23), percentH(45), 2, &ui.MainMenu.StartButton))
 		} else {
-			ui.MainMenu.StartButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.Sprite, percentW(22), percentH(65), 2, r, ui))
+			ui.MainMenu.StartButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.Sprite, percentW(23), percentH(45), 2, &ui.MainMenu.StartButton))
+		}
+
+		if ui.MainMenu.OptionsButton.Hovering {
+			ui.MainMenu.OptionsButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.OptionsButton.Sprite, percentW(23), percentH(50), 2, &ui.MainMenu.OptionsButton))
+		} else {
+			ui.MainMenu.OptionsButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.OptionsButton.Sprite, percentW(23), percentH(50), 2, &ui.MainMenu.OptionsButton))
+		}
+
+		if ui.MainMenu.AboutButton.Hovering {
+			ui.MainMenu.AboutButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.AboutButton.Sprite, percentW(23), percentH(55), 2, &ui.MainMenu.AboutButton))
+		} else {
+			ui.MainMenu.AboutButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.AboutButton.Sprite, percentW(23), percentH(55), 2, &ui.MainMenu.AboutButton))
+		}
+
+		if ui.MainMenu.ExitButton.Hovering {
+			ui.MainMenu.ExitButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.ExitButton.Sprite, percentW(23), percentH(60), 2, &ui.MainMenu.ExitButton))
+		} else {
+			ui.MainMenu.ExitButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.ExitButton.Sprite, percentW(23), percentH(60), 2, &ui.MainMenu.ExitButton))
 		}
 
 

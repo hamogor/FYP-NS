@@ -1,26 +1,18 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 )
 
-func anchorTL(mat pixel.Matrix, sprite *pixel.Sprite, offX, offY, scale float64, r *Render, ui *Ui) pixel.Matrix {
-	//w, h := WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
-
+func anchorTL(mat pixel.Matrix, sprite *pixel.Sprite, offX, offY, scale float64, btn *Button) pixel.Matrix {
 	v := pixel.V(sprite.Frame().Max.X/2 + offX,  (WHeight-sprite.Frame().Max.Y/2) -offY) // Origin
-	//s := sprite.Frame()
 	rect := pixel.Rect{
 		Min: pixel.Vec{X: v.X - (sprite.Frame().Max.X*scale) / scale, Y: v.Y - (sprite.Frame().Max.Y*scale) / scale},
 		Max: pixel.Vec{X: v.X + (sprite.Frame().Max.X*scale) / scale, Y: v.Y + (sprite.Frame().Max.Y*scale) / scale},
 	}
-	ui.MainMenu.StartButton.Rect = rect
-	mouse := r.Window.MousePosition()
-	fmt.Print(v, " ", mouse, " ", rect, " ", mat.String(),  "\n")
-	//return pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Scaled(pixel.ZV, scale).Moved(v)
+	btn.Rect = rect
+
 	return pixel.IM.Scaled(pixel.ZV, scale).Moved(v)
-	//1920x1080 - Vec(73.5, 1061)
-	//1366x768 - Vec(73.5, 749)
 }
 
 func screenRect(mat pixel.Matrix, sprite *pixel.Sprite, r *Render) pixel.Rect {

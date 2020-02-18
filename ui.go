@@ -18,6 +18,10 @@ type buttonHandler func(s *Scenes)
 type MainMenu struct {
 	Background *pixel.Sprite
 	StartButton Button
+	OptionsButton Button
+	AboutButton Button
+	ExitButton Button
+	Logo *pixel.Sprite
 	Matrix pixel.Matrix
 }
 
@@ -55,6 +59,10 @@ func (g *Game) initUi() {
 	mainMenuSprite := GetPixelPicture("./assets/bg/island_2.png")
 	startButtonSprite := GetPixelPicture("./assets/png/start_btn.png")
 	startButtonHSprite := GetPixelPicture("./assets/png/start_btn_hover.png")
+	optionsBtn, optionsBtnHover := GetPixelPicture("./assets/png/options_btn.png"), GetPixelPicture("./assets/png/options_btn_hover.png")
+	aboutBtn, aboutBtnHover := GetPixelPicture("./assets/png/about_btn.png"), GetPixelPicture("./assets/png/about_btn_hover.png")
+	exitBtn, exitBtnHover := GetPixelPicture("./assets/png/exit_btn.png"), GetPixelPicture("./assets/png/exit_btn_hover.png")
+	logo := GetPixelPicture("./assets/bg/title.png")
 	ui := &Ui{
 		MiniMap: MiniMap{
 			Sprite: pixel.NewSprite(mapSprite, mapSprite.Bounds()),
@@ -70,11 +78,30 @@ func (g *Game) initUi() {
 		},
 		MainMenu: MainMenu{
 			Background: pixel.NewSprite(mainMenuSprite, mainMenuSprite.Bounds()),
+			Logo: pixel.NewSprite(logo, logo.Bounds()),
 			StartButton:    Button{
 				Pos:     pixel.Rect{},
 				Sprite:  pixel.NewSprite(startButtonSprite, startButtonSprite.Bounds()),
 				HSprite: pixel.NewSprite(startButtonHSprite, startButtonHSprite.Bounds()),
 				Handler: startButton,
+			},
+			OptionsButton: Button{
+				Pos: pixel.Rect{},
+				Sprite: pixel.NewSprite(optionsBtn, optionsBtn.Bounds()),
+				HSprite: pixel.NewSprite(optionsBtnHover, optionsBtnHover.Bounds()),
+				Handler: nil,
+			},
+			AboutButton: Button{
+				Pos: pixel.Rect{},
+				Sprite: pixel.NewSprite(aboutBtn, aboutBtn.Bounds()),
+				HSprite: pixel.NewSprite(aboutBtnHover, aboutBtnHover.Bounds()),
+				Handler: nil,
+			},
+			ExitButton: Button{
+				Pos: pixel.Rect{},
+				Sprite: pixel.NewSprite(exitBtn, exitBtn.Bounds()),
+				HSprite: pixel.NewSprite(exitBtnHover, exitBtnHover.Bounds()),
+				Handler: nil,
 			},
 		},
 	}
