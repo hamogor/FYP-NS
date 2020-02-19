@@ -10,7 +10,10 @@ func anchorTL(mat pixel.Matrix, sprite *pixel.Sprite, offX, offY, scale float64,
 		Min: pixel.Vec{X: v.X - (sprite.Frame().Max.X*scale) / scale, Y: v.Y - (sprite.Frame().Max.Y*scale) / scale},
 		Max: pixel.Vec{X: v.X + (sprite.Frame().Max.X*scale) / scale, Y: v.Y + (sprite.Frame().Max.Y*scale) / scale},
 	}
-	btn.Rect = rect
+	if btn != nil {
+		btn.Rect = rect
+	}
+
 
 	return pixel.IM.Scaled(pixel.ZV, scale).Moved(v)
 }

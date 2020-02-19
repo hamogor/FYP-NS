@@ -21,14 +21,14 @@ const (
 	Floor
 	Door
 	OpenDoor
-	NilTerrain
+	Free
 )
 
 func (pos Position) terrain(l *Level) Terrain {
 	if pos.inLevel() {
 		return l.Tiles[pos.X][pos.Y].Terrain
 	} else {
-		return NilTerrain
+		return Free
 	}
 }
 
@@ -41,7 +41,7 @@ func (pos Position) bitmask(l *Level) int {
 
 func tile() *Tile {
 	return &Tile{
-		Terrain: 0,
+		Terrain: Floor,
 		Sprites: Sprites{},
 		Blocks:  false,
 		Bitmask: 0,

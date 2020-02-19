@@ -137,7 +137,7 @@ func (r *Render) renderMiniMap(p *Player, ui *Ui, s *Scenes) {
 	if s.ActiveElements[MiniMapActive] {
 		tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
 		ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
-		ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(3, 3)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
+		ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
 	}
 }
 

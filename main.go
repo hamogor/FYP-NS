@@ -26,10 +26,11 @@ func initialiseGame() *Game {
 	g.initPlayer()
 	g.initLevel()
 	g.initUi()
+	generateLevel(g) //TESTING
 	g.initData()
 	g.initScenes()
 
-	generateLevel(g) //TESTING
+
 	return g
 }
 
