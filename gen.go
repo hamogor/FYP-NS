@@ -38,7 +38,7 @@ func generateLevelold(g *Game) {
 		}
 	}
 
-	rootNode := newNode(0, 0, LevelW+2, LevelH+2)
+	rootNode := newNodeOld(0, 0, LevelW+2, LevelH+2)
 	nodes = append(nodes, rootNode)
 	split := true
 
@@ -106,11 +106,11 @@ func (node *BSPNode) split(tree *tree) bool {
 	split := random(MinNodeSize,maxS)
 
 	if splitHorizontally {
-		node.Left = newNode(node.X, node.Y, node.W, split)
-		node.Right = newNode(node.X, node.Y+split, node.W, node.H-split)
+		node.Left = newNodeOld(node.X, node.Y, node.W, split)
+		node.Right = newNodeOld(node.X, node.Y+split, node.W, node.H-split)
 	} else {
-		node.Left = newNode(node.X, node.Y, split, node.H)
-		node.Right = newNode(node.X + split, node.Y, node.W - split, node.H)
+		node.Left = newNodeOld(node.X, node.Y, split, node.H)
+		node.Right = newNodeOld(node.X + split, node.Y, node.W - split, node.H)
 	}
 	*tree = append(*tree, node.Left, node.Right)
 	return true
@@ -212,7 +212,7 @@ func random(min, max int) int {
 	return rand.Intn(max - min) + min
 }
 
-func newNode(x,y,w,h int) *BSPNode {
+func newNodeOld(x,y,w,h int) *BSPNode {
 	return &BSPNode{
 		Area:   Rectangle{
 			X:      x,

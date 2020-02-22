@@ -19,9 +19,6 @@ type Game struct {
 func initialiseGame() *Game {
 	g := &Game{}
 	g.buildAssets()
-
-
-
 	g.initRender()
 	g.initPlayer()
 	g.initLevel()

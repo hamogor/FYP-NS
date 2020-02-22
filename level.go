@@ -5,6 +5,31 @@ type Level struct {
 	Spawn Position
 	Rooms []Rectangle
 	Doors []Position
+	Actors []*Actor
+}
+
+func (l *Level) SizeX() int {
+	return LevelW
+}
+
+func (l *Level) SizeY() int {
+	return LevelH
+}
+
+func (l *Level) IsPassable(x, y int) bool {
+	if l.Tiles[x][y].Terrain == Wall || l.Tiles[x][y].Terrain == Door {
+		return false
+	} else {
+		return true
+	}
+}
+
+func (l *Level) OOB(x, y int) bool {
+	if x > 0 && y > 0 && x <= LevelW && y <= LevelH {
+		return false
+	} else {
+		return true
+	}
 }
 
 // Objective per floor, can't go to next without completing.
@@ -132,7 +157,7 @@ func (pos Position) ResolveBitMaskWall(l *Level) []bool {
 
 func (pos Position) ResolveBitMaskFloor(l *Level) []bool {
 	bit := make([]bool, 8)
-	if pos.SW().floor(l) {
+	if  pos.SW().floor(l) {
 		if pos.S().floor(l) && pos.W().floor(l) {
 			bit[7] = true
 		}

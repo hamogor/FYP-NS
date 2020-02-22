@@ -18,7 +18,8 @@ var (
 	second                        = time.Tick(time.Second)
 	last                          = time.Now()
 	WHeight               float64 = 768
-	WWidth                float64 = 1080
+	WWidth                float64 = 1366
+	fleeThreshhold                = 50
 	tilePaths                     = []string{
 		"/l_wall",
 		"/d_wall",
@@ -35,7 +36,7 @@ var (
 )
 
 const (
-	Scaled           = 1
+	Scaled           = 4
 	TileW, TileH     = 32, 48
 	SpriteW, SpriteH = 32, 48
 	LevelW, LevelH   = 64, 64

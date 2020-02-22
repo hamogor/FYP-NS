@@ -256,3 +256,9 @@ func min(a, b int) int {
 	}
 	return b
 }
+
+func (l *Level) calculateAllFovs() {
+	for i := range l.Actors {
+		l.Actors[i].calculateFov()
+	}
+}

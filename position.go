@@ -8,6 +8,13 @@ type Position struct {
 	X, Y int
 }
 
+func (p Position) GetXY() (int, int) {
+	if p.X < LevelW && p.Y < LevelH && p.X > 0 && p.Y > 0 {
+		return p.X, p.Y
+	}
+	return 0, 0
+}
+
 func (pos Position) E() Position {
 	return Position{X: pos.X + 1, Y: pos.Y}
 }
