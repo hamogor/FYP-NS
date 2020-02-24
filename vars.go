@@ -14,12 +14,10 @@ var (
 	spriteSheetOutputPath         = "./assets/sprites.png"
 	frames                        = 0
 	dt                            = 0.0
-	allowedInput                  = true
 	second                        = time.Tick(time.Second)
 	last                          = time.Now()
 	WHeight               float64 = 768
 	WWidth                float64 = 1366
-	fleeThreshhold                = 50
 	tilePaths                     = []string{
 		"/l_wall",
 		"/d_wall",
@@ -36,7 +34,7 @@ var (
 )
 
 const (
-	Scaled           = 4
+	Scaled           = 2
 	TileW, TileH     = 32, 48
 	SpriteW, SpriteH = 32, 48
 	LevelW, LevelH   = 64, 64
