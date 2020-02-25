@@ -187,3 +187,7 @@ func getJsonDuration(json string, i int) float64 {
 func getJsonLoop(json string) bool {
 	return gjson.Get(json, "loop").Bool()
 }
+
+func rectToRectangle(r image.Rectangle) pixel.Rect {
+	return pixel.R(float64(r.Min.X), float64(r.Min.Y), float64(r.Max.X), float64(r.Max.Y))
+}

@@ -4,6 +4,7 @@ import (
 	"github.com/faiface/pixel"
 	"image"
 	"image/color"
+	"image/draw"
 	"os"
 )
 
@@ -12,9 +13,18 @@ type Ui struct {
 	MenuBar  MenuBar
 	Portrait Portrait
 	MainMenu MainMenu
+	Test     Test
 }
 
 type buttonHandler func(s *Scenes)
+
+type Test struct {
+	Objectives *pixel.Sprite
+	Look       *pixel.Sprite
+	Bar        *pixel.Sprite
+	HBar       *pixel.Sprite
+	Buttons    *pixel.Sprite
+}
 
 type MainMenu struct {
 	Background *pixel.Sprite
@@ -36,7 +46,7 @@ type Button struct {
 }
 
 type MiniMap struct {
-	Sprite  *pixel.Sprite // Box sprite
+	Sprite  *pixel.Sprite // Objectives sprite
 	Msprite *pixel.Sprite // Map sprite
 	Map     *image.RGBA   // Map pixels
 }
@@ -105,8 +115,137 @@ func (g *Game) initUi() {
 				Handler: exitButton,
 			},
 		},
+		Test: Test{
+			Objectives: buildTest(200, 200),
+			Look:       buildTest(200, 100),
+			Bar:        buildTest(500, 65),
+			HBar:       buildTest(400, 65),
+			Buttons:    buildTest(65, 200),
+		},
 	}
 	g.Ui = ui
+}
+
+func buildTest(x, y int) *pixel.Sprite {
+	boxBL := GetUnparsedImg("/ui/box_BL")
+	boxBM := GetUnparsedImg("/ui/box_BM")
+	boxBR := GetUnparsedImg("/ui/box_BR")
+	boxL := GetUnparsedImg("/ui/box_L")
+	boxM := GetUnparsedImg("/ui/box_M")
+	boxR := GetUnparsedImg("/ui/box_R")
+	boxTL := GetUnparsedImg("/ui/box_TL")
+	boxTM := GetUnparsedImg("/ui/box_TM")
+	boxTR := GetUnparsedImg("/ui/box_TR")
+
+	w, h := x, y
+	r := image.Rectangle{Max: image.Point{X: w, Y: h}}
+	img := image.NewRGBA(r)
+
+	// BOTTOM LEFT
+	blRect := image.Rectangle{
+		Min: image.Point{X: boxBL.Bounds().Min.X, Y:  h - boxBL.Bounds().Max.Y},
+		Max: image.Point{X: boxBL.Bounds().Max.X, Y: boxBL.Bounds().Max.Y*2 + h},
+	}
+	draw.Draw(img, blRect, boxBL, image.Point{X: 0, Y: 0}, draw.Src)
+	// BOTTOM LEFT
+
+	// BOTTOM RIGHT
+	brRect := image.Rectangle{
+		Min: image.Point{X: w - boxBR.Bounds().Max.X, Y: h - boxBR.Bounds().Max.Y},
+		Max: image.Point{X: boxBR.Bounds().Max.X*2 + w, Y: boxBR.Bounds().Max.Y*2 + h},
+	}
+	draw.Draw(img, brRect, boxBR, image.Point{X: 0, Y: 0}, draw.Src)
+
+
+	// TOP LEFT
+	tlRect := image.Rectangle{
+		Min: image.Point{X: boxTL.Bounds().Min.X, Y: boxTL.Bounds().Min.Y},
+		Max: image.Point{X: boxTL.Bounds().Max.X, Y: boxTL.Bounds().Max.Y},
+	}
+	draw.Draw(img, tlRect, boxTL, image.Point{X: 0, Y: 0}, draw.Src)
+
+
+	// TOP RIGHT
+	trRect := image.Rectangle{
+		Min: image.Point{X: w - boxTR.Bounds().Max.X, Y: boxTR.Bounds().Min.Y},
+		Max: image.Point{X: boxTR.Bounds().Max.X*2 + w, Y: boxTR.Bounds().Max.Y},
+	}
+	draw.Draw(img, trRect, boxTR, image.Point{X: 0, Y: 0}, draw.Src)
+
+
+	// LEFT
+	vertH := h - (boxBL.Bounds().Max.Y - boxTL.Bounds().Max.Y)
+	horiW := w - boxTR.Bounds().Max.X
+	for i := 0; i < vertH; i++ {
+		nextPos := image.Point{X: 0, Y: boxL.Bounds().Max.Y + i}
+		rect = image.Rectangle{
+			Min: nextPos,
+			Max: nextPos.Add(boxL.Bounds().Max),
+		}
+		if i == h - boxBL.Bounds().Max.Y {break}
+		draw.Draw(img, rect, boxL, image.Point{X: 0, Y: 0}, draw.Src)
+	}
+
+	// RIGHT
+	for i := 0; i < vertH; i++ {
+		nextPos := image.Point{X: w - boxTR.Bounds().Max.X, Y: boxL.Bounds().Max.Y + i}
+		rect = image.Rectangle{
+			Min: nextPos,
+			Max: nextPos.Add(boxR.Bounds().Max),
+		}
+		if i == h - boxBR.Bounds().Max.Y {break}
+		draw.Draw(img, rect, boxR, image.Point{X: 0, Y: 0}, draw.Src)
+	}
+
+	// TOP
+	for i := 0; i < horiW; i++ {
+		nextPos := image.Point{X: boxTL.Bounds().Max.X + i, Y: 0}
+		rect = image.Rectangle{
+			Min: nextPos,
+			Max: nextPos.Add(boxTM.Bounds().Max),
+		}
+		if i == horiW- 1 {break}
+		draw.Draw(img, rect, boxTM, image.Point{X: 0, Y: 0}, draw.Src)
+	}
+
+	// BOTTOM
+	for i := 0; i < horiW; i++ {
+		nextPos := image.Point{X: boxBL.Bounds().Max.X + i, Y: h - boxBR.Bounds().Max.Y}
+		rect = image.Rectangle{
+			Min: nextPos,
+			Max: nextPos.Add(boxBM.Bounds().Max),
+		}
+		if i == horiW- 1 {break}
+		draw.Draw(img, rect, boxBM, image.Point{X: 0, Y: 0}, draw.Src)
+	}
+
+	middleRect := image.Rectangle{
+		Min: image.Point{
+			X: boxBL.Bounds().Max.X,
+			Y: boxBL.Bounds().Max.Y,
+		},
+		Max: image.Point{
+			X: horiW,
+			Y: vertH - boxBL.Bounds().Max.X,
+		},
+	}
+	for i := middleRect.Min.X; i < middleRect.Max.X; i++ {
+		for j := middleRect.Min.Y; j < middleRect.Max.Y; j++ {
+			nextPos := image.Point{X: i, Y: j}
+			rect = image.Rectangle{
+				Min: nextPos,
+				Max: nextPos.Add(boxM.Bounds().Max),
+			}
+			draw.Draw(img, rect, boxM, image.Point{X: 0, Y: 0}, draw.Src)
+		}
+	}
+
+
+
+
+	pic := pixel.PictureDataFromImage(img)
+	return  pixel.NewSprite(pic, rectToRectangle(img.Bounds()))
+
 }
 
 func (p *Player) updateMiniMap(l *Level, ui *Ui) {
@@ -151,5 +290,34 @@ func exitButton(s *Scenes) {
 		os.Exit(0)
 	}
 }
+
+
+//middleW := w - (boxBL.Bounds().Max.X + boxBR.Bounds().Max.X)
+//leftH := h - (boxBL.Bounds().Max.Y + boxTL.Bounds().Max.Y)
+//r := image.Rectangle{Max: image.Point{X: w, Y: h}}
+//img := image.NewRGBA(r)
+//
+//
+//
+////BOTTOM
+//draw.Draw(img, boxBL.Bounds(), boxBL, image.Point{X: 0, Y: 0}, draw.Src) // Draw BL
+//for i := 0; i < middleW; i++ {
+//	nextPos := image.Point{X: boxBL.Bounds().Max.X + i, Y: 0}
+//	rect = image.Rectangle{
+//		Min: nextPos,
+//		Max: nextPos.Add(boxBL.Bounds().Max),
+//	}
+//	draw.Draw(img, rect, boxBM, image.Point{X: 0, Y: 0}, draw.Src)
+//}
+//draw.Draw(img, rect, boxBR, image.Point{X: 0, Y: 0}, draw.Src)
+//
+//for i := 0; i < leftH; i++ {
+//	nextPos := image.Point{X: 0, Y: boxBL.Bounds().Max.Y + i}
+//	rect = image.Rectangle{
+//		Min: nextPos,
+//		Max: nextPos.Add(boxBL.Bounds().Max),
+//	}
+//	draw.Draw(img, rect, boxL, image.Point{X: 0, Y: 0}, draw.Src)
+//}
 
 

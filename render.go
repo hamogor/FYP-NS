@@ -126,19 +126,20 @@ func (r *Render) renderEnvironment(l *Level, p *Player, s *Scenes) {
 }
 
 func (r *Render) renderUi(p *Player, ui *Ui, s *Scenes) {
-		r.renderMiniMap(p, ui, s)
-		r.renderBar(ui, s)
-		r.renderPortrait(ui, s) // Top of bar
-		r.renderHealthBar(ui, p, s)
+		//r.renderMiniMap(p, ui, s)
+		//r.renderBar(ui, s)
+		//r.renderPortrait(ui, s) // Top of bar
+		//r.renderHealthBar(ui, p, s)
 		r.renderMainMenu(ui, s)
+		r.renderTest9Slice(ui, s)
 }
 
 func (r *Render) renderMiniMap(p *Player, ui *Ui, s *Scenes) {
 	if s.ActiveElements[MiniMapActive] {
 		//tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
-		scale := (WWidth / ui.MiniMap.Sprite.Frame().Max.X) / 10
-		tr := pixel.V(WWidth - (ui.MiniMap.Sprite.Frame().Max.X / 2) * scale, WHeight - (ui.MiniMap.Sprite.Frame().Max.Y / 2) * scale)
-		ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
+		//scale := (WWidth / ui.MiniMap.Sprite.Frame().Max.X) / 8
+		tr := pixel.V(WWidth - (ui.MiniMap.Sprite.Frame().Max.X / 2), WHeight - (ui.MiniMap.Sprite.Frame().Max.Y / 2))
+		ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr))
 		//ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
 		//ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
 	}
@@ -220,6 +221,24 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 
 
 	}
+}
+
+func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
+	scale := (WWidth / ui.Test.Objectives.Frame().Max.X) / 8
+	tr := pixel.V(WWidth - (ui.Test.Objectives.Frame().Max.X / 2) * scale - 4, WHeight - (ui.Test.Objectives.Frame().Max.Y / 2) * scale - 4)
+	ui.Test.Objectives.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
+
+	br := pixel.V(WWidth - (ui.Test.Look.Frame().Max.X / 2) * scale - 4, (ui.Test.Look.Frame().Max.Y / 2) * scale + 4)
+	ui.Test.Look.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(br))
+
+	bm := pixel.V(WWidth/2, (ui.Test.Bar.Frame().Max.Y / 2) * scale + 4)
+	ui.Test.Bar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(bm))
+
+	tl := pixel.V((ui.Test.HBar.Frame().Max.X/2) * scale + 4, WHeight - (ui.Test.HBar.Frame().Max.Y /2) * scale - 4)
+	ui.Test.HBar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tl))
+
+	buttonPos := pixel.V((ui.Test.Buttons.Frame().Max.X / 2) * scale + 4, WHeight / 3 + (WHeight/3))
+	ui.Test.Buttons.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(buttonPos))
 }
 
 func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
