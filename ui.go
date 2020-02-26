@@ -74,6 +74,13 @@ func (g *Game) initUi() {
 	aboutBtn, aboutBtnHover := GetPixelPicture("./assets/png/about_btn.png"), GetPixelPicture("./assets/png/about_btn_hover.png")
 	exitBtn, exitBtnHover := GetPixelPicture("./assets/png/exit_btn.png"), GetPixelPicture("./assets/png/exit_btn_hover.png")
 	logo := GetPixelPicture("./assets/bg/title.png")
+
+	// NEW UI
+	bar := GetPixelPicture("./assets/png/ui/sliced/bar.png")
+	buttons := GetPixelPicture("./assets/png/ui/sliced/buttons.png")
+	hbar := GetPixelPicture("./assets/png/ui/sliced/hbar.png")
+	look := GetPixelPicture("./assets/png/ui/sliced/look.png")
+	objectives := GetPixelPicture("./assets/png/ui/sliced/objectives.png")
 	ui := &Ui{
 		MiniMap: MiniMap{
 			Sprite: pixel.NewSprite(mapSprite, mapSprite.Bounds()),
@@ -116,11 +123,11 @@ func (g *Game) initUi() {
 			},
 		},
 		Test: Test{
-			Objectives: buildTest(200, 200),
-			Look:       buildTest(200, 100),
-			Bar:        buildTest(500, 65),
-			HBar:       buildTest(400, 65),
-			Buttons:    buildTest(65, 200),
+			Objectives: pixel.NewSprite(objectives, objectives.Bounds()),
+			Look:       pixel.NewSprite(look, look.Bounds()),
+			Bar:        pixel.NewSprite(bar, bar.Bounds()),
+			HBar:       pixel.NewSprite(hbar, hbar.Bounds()),
+			Buttons:    pixel.NewSprite(buttons, buttons.Bounds()),
 		},
 	}
 	g.Ui = ui

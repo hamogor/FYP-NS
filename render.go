@@ -33,7 +33,7 @@ func (g *Game) initRender() {
 		Bounds:      pixel.R(0, 0, WWidth, WHeight),
 		Monitor:     nil,
 		Resizable:   false,
-		Undecorated: false,
+		Undecorated: true,
 		NoIconify:   false,
 		AlwaysOnTop: false,
 		VSync:       false,
@@ -224,21 +224,24 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 }
 
 func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
-	scale := (WWidth / ui.Test.Objectives.Frame().Max.X) / 8
-	tr := pixel.V(WWidth - (ui.Test.Objectives.Frame().Max.X / 2) * scale - 4, WHeight - (ui.Test.Objectives.Frame().Max.Y / 2) * scale - 4)
-	ui.Test.Objectives.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
+	if s.CurrentScene == GameScene {
+		scale := (WWidth / ui.Test.Objectives.Frame().Max.X) / 8
+		tr := pixel.V(WWidth - (ui.Test.Objectives.Frame().Max.X / 2) * scale - 4, WHeight - (ui.Test.Objectives.Frame().Max.Y / 2) * scale - 4)
+		ui.Test.Objectives.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
 
-	br := pixel.V(WWidth - (ui.Test.Look.Frame().Max.X / 2) * scale - 4, (ui.Test.Look.Frame().Max.Y / 2) * scale + 4)
-	ui.Test.Look.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(br))
+		belowTR := pixel.V(WWidth - (ui.Test.Look.Frame().Max.X / 2) * scale - 4, WHeight - ((ui.Test.Objectives.Frame().Max.Y) + (ui.Test.Look.Frame().Max.Y / 2)) * scale - 10)
+		ui.Test.Look.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(belowTR))
 
-	bm := pixel.V(WWidth/2, (ui.Test.Bar.Frame().Max.Y / 2) * scale + 4)
-	ui.Test.Bar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(bm))
+		bm := pixel.V(WWidth/2, (ui.Test.Bar.Frame().Max.Y / 2) * scale + 4)
+		ui.Test.Bar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(bm))
 
-	tl := pixel.V((ui.Test.HBar.Frame().Max.X/2) * scale + 4, WHeight - (ui.Test.HBar.Frame().Max.Y /2) * scale - 4)
-	ui.Test.HBar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tl))
+		tl := pixel.V((ui.Test.HBar.Frame().Max.X/2) * scale + 4, WHeight - (ui.Test.HBar.Frame().Max.Y /2) * scale - 4)
+		ui.Test.HBar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tl))
 
-	buttonPos := pixel.V((ui.Test.Buttons.Frame().Max.X / 2) * scale + 4, WHeight / 3 + (WHeight/3))
-	ui.Test.Buttons.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(buttonPos))
+		buttonPos := pixel.V((ui.Test.Buttons.Frame().Max.X / 2) * scale + 4, WHeight / 3 + (WHeight/3) * scale + 4)
+		ui.Test.Buttons.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(buttonPos))
+	}
+
 }
 
 func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
