@@ -225,7 +225,7 @@ func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
 
 func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
 	if s.CurrentScene == GameScene {
-		scale := (WWidth / ui.Test.Objectives.Frame().Max.X) / 8
+		scale := math.Round((WWidth / ui.Test.Objectives.Frame().Max.X) / 8)
 		tr := pixel.V(WWidth - (ui.Test.Objectives.Frame().Max.X / 2) * scale - 4, WHeight - (ui.Test.Objectives.Frame().Max.Y / 2) * scale - 4)
 		ui.Test.Objectives.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
 
