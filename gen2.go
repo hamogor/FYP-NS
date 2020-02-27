@@ -23,10 +23,11 @@ func generateLevel(g *Game) {
 		Doors: []Position{},
 		Actors: make([]*Actor, 0),
 	}
+	roomSize := 6
 	l.fillVoid(g.Assets)
-	l.createRoomGrid(6, g.Assets)
-	l.createDoors(6, g.Assets)
-	l.crushWalls(6, 0.45, g.Assets)
+	l.createRoomGrid(float64(roomSize), g.Assets)
+	l.createDoors(roomSize, g.Assets)
+	l.crushWalls(roomSize, 0.45, g.Assets)
 	l.clearWallPoints(g.Assets)
 
 	l.print()
