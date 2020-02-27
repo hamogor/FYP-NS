@@ -23,8 +23,8 @@ func initialiseGame() *Game {
 	g.initPlayer()
 	g.initLevel()
 	g.initUi()
-	g.initLevel()
-	//generateLevel(g) //TESTING
+	//g.initLevel()
+	generateLevel(g) //TESTING
 	g.initData()
 	g.initScenes()
 
