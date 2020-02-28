@@ -34,7 +34,7 @@ var (
 )
 
 const (
-	Scaled           = 1
+	Scaled           = 2
 	TileW, TileH     = 32, 48
 	SpriteW, SpriteH = 32, 48
 	LevelW, LevelH   = 64, 64
