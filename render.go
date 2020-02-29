@@ -33,7 +33,7 @@ func (g *Game) initRender() {
 		Bounds:      pixel.R(0, 0, WWidth, WHeight),
 		Monitor:     nil,
 		Resizable:   false,
-		Undecorated: true,
+		Undecorated: false,
 		NoIconify:   false,
 		AlwaysOnTop: false,
 		VSync:       false,
