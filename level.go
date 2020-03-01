@@ -6,6 +6,7 @@ type Level struct {
 	Rooms  []Rectangle
 	Doors  []Position
 	Actors []*Actor
+	Lights []*Light
 }
 
 func (l *Level) SizeX() int {
@@ -79,18 +80,7 @@ func (g *Game) initLevel() {
 	}
 	resolveDoors(l, g.Assets)
 
-	//for x := 0; x < LevelW; x++ {
-	//	for y := 0; y < LevelH; y++ {
-	//		if l.Tiles[x][y].Terrain == Wall {
-	//			fmt.Print("#")
-	//		} else if l.Tiles[x][y].Terrain == Floor {
-	//			fmt.Print(".")
-	//		} else if l.Tiles[x][y].Terrain == Door {
-	//			fmt.Print("_")
-	//		}
-	//	}
-	//	fmt.Println()
-	//}
+
 
 	g.Level = l
 }

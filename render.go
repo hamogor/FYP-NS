@@ -82,6 +82,7 @@ func (g *Game) render() {
 	g.Render.renderEnvironment(g.Level, g.Player, g.Scenes)
 	g.Render.renderActors(g.Player, g.Level, g.Assets, g.Scenes)
 
+
 	g.Render.Env.Batch.Draw(g.Render.Env.Canvas)
 	g.Render.Actors.Batch.Draw(g.Render.Actors.Canvas)
 
@@ -93,6 +94,7 @@ func (g *Game) render() {
 	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.Actors.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.renderUi(g.Player, g.Ui, g.Scenes)
+	g.Render.renderLights(g.Ui, g.Scenes, g.Level)
 	g.Render.Window.Update()
 }
 
@@ -210,6 +212,14 @@ func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
 		ui.Test.Buttons.Draw(r.Window, anchorAndScale(ui.Test.Buttons, BL, pixel.V(4, WHeight/2), 1))
 	}
 
+}
+
+func (r *Render) renderLights(ui *Ui, s *Scenes, l *Level) {
+	if s.CurrentScene == GameScene {
+		for i := range l.Lights {
+			l.Lights[i].applyLight(r)
+		}
+	}
 }
 
 func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
