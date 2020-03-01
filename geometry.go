@@ -68,7 +68,7 @@ func anchor(button *Button) pixel.Matrix {
 	off := &button.Offset
 	switch button.Corner {
 	case TL:
-		v = pixel.V((r.Max.X/2 + off.X) * button.Scale + edgeOffset,
+		v = pixel.V((r.Max.X/2 + off.X) * button.Scale,
 			WHeight - (r.Max.Y/2 + off.Y) * button.Scale - edgeOffset)
 		break
 	case TR:
