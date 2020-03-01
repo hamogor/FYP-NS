@@ -1,7 +1,7 @@
 package main
 
 type Scenes struct {
-	CurrentScene SceneName
+	CurrentScene   SceneName
 	ActiveElements map[UiElement]bool
 }
 
@@ -15,11 +15,11 @@ const (
 type UiElement int
 
 const (
-	MiniMapActive UiElement = iota
-	MenuBarActive = 2
-	PortraitActive = 3
-	MainMenuActive = 4
-	PlayerHealthActive = 5
+	MiniMapActive      UiElement = iota
+	MenuBarActive                = 2
+	PortraitActive               = 3
+	MainMenuActive               = 4
+	PlayerHealthActive           = 5
 )
 
 func (g *Game) initScenes() {

@@ -69,15 +69,12 @@ func (g *Game) render() {
 	g.Scenes.setActiveUiElements()
 	g.Render.Env.Batch.Clear()
 	g.Render.Actors.Batch.Clear()
-	g.Render.Env.Canvas.Clear(color.RGBA{R: 8, G: 8, B: 12, A: 255,})
+	g.Render.Env.Canvas.Clear(color.RGBA{R: 8, G: 8, B: 12, A: 255})
 	g.Render.Actors.Canvas.Clear(color.Transparent)
 	g.Render.Ui = g.Render.Ui[:0]
 
-
-
 	g.Render.Camera = pixel.Lerp(g.Render.Camera, g.Player.Actor.Pos.sToVec(), 1-math.Pow(1.0/128, dt))
 	cam := pixel.IM.Moved(pixel.V(RoundFloat(g.Render.Camera.X), RoundFloat(g.Render.Camera.Y)).Scaled(-1))
-
 
 	g.Render.Env.Batch.SetMatrix(cam)
 	g.Render.Actors.Batch.SetMatrix(cam)
@@ -91,6 +88,14 @@ func (g *Game) render() {
 	canvasMatrix := pixel.IM.Scaled(pixel.ZV, math.Min(Scaled, Scaled)).Moved(g.Render.Env.Canvas.Bounds().Center())
 	g.Render.Env.Canvas.SetMatrix(canvasMatrix)
 	g.Render.Actors.Canvas.SetMatrix(canvasMatrix)
+
+	buttonrect := imdraw.New(nil)
+	buttonrect.Clear()
+	buttonrect.Color = colornames.Darkred
+	buttonrect.Push(g.Ui.MainMenu.StartButton.Rect.Min)
+	buttonrect.Push(g.Ui.MainMenu.StartButton.Rect.Max)
+	buttonrect.Rectangle(0)
+	buttonrect.Draw(g.Render.Window)
 
 	worldMatrix := pixel.IM.Moved(g.Render.Window.Bounds().Center())
 	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
@@ -126,42 +131,23 @@ func (r *Render) renderEnvironment(l *Level, p *Player, s *Scenes) {
 }
 
 func (r *Render) renderUi(p *Player, ui *Ui, s *Scenes) {
-		//r.renderMiniMap(p, ui, s)
-		//r.renderBar(ui, s)
-		//r.renderPortrait(ui, s) // Top of bar
-		//r.renderHealthBar(ui, p, s)
-		r.renderMainMenu(ui, s)
-		r.renderTest9Slice(ui, s)
+	//r.renderMiniMap(p, ui, s)
+	//r.renderBar(ui, s)
+	//r.renderPortrait(ui, s) // Top of bar
+	//r.renderHealthBar(ui, p, s)
+	r.renderMainMenu(ui, s)
+	r.renderTest9Slice(ui, s)
 }
 
 func (r *Render) renderMiniMap(p *Player, ui *Ui, s *Scenes) {
-	if s.ActiveElements[MiniMapActive] {
-		//tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
-		//scale := (WWidth / ui.MiniMap.Sprite.Frame().Max.X) / 8
-		tr := pixel.V(WWidth - (ui.MiniMap.Sprite.Frame().Max.X / 2), WHeight - (ui.MiniMap.Sprite.Frame().Max.Y / 2))
-		ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr))
-		//ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
-		//ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
-	}
-}
-
-func (r *Render) renderBar(ui *Ui, s *Scenes) {
-	if s.ActiveElements[MenuBarActive] {
-		ui.MenuBar.LSprite.Draw(r.Window, pixel.IM.Moved(pixel.V(ui.MenuBar.LSprite.Frame().Max.X, ui.MenuBar.LSprite.Frame().Max.Y/2)))
-		ui.MenuBar.RSprite.Draw(r.Window, pixel.IM.Moved(pixel.V(WWidth-ui.MenuBar.RSprite.Frame().Max.X, ui.MenuBar.RSprite.Frame().Max.Y/2)))
-		mat := pixel.IM
-		mat = mat.ScaledXY(pixel.ZV, pixel.V(WWidth-(ui.MenuBar.LSprite.Frame().Max.X+ui.MenuBar.RSprite.Frame().Max.X)-10, 1))
-		mat = mat.Moved(pixel.V(WWidth/2, ui.MenuBar.Sprite.Frame().Max.Y/2))
-		ui.MenuBar.Sprite.Draw(r.Window, mat)
-	}
-
-}
-
-func (r *Render) renderPortrait(ui *Ui, s *Scenes) {
-	if s.ActiveElements[PortraitActive] {
-		blOfBar := pixel.V(ui.MenuBar.LSprite.Frame().Max.X+ui.Portrait.Sprite.Frame().Max.X+10, ui.MenuBar.LSprite.Frame().Max.Y/2)
-		ui.Portrait.Sprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).Moved(blOfBar))
-	}
+	//	if s.ActiveElements[MiniMapActive] {
+	//		//tr := pixel.V(WWidth-(LevelW*2), WHeight-(LevelH*2))
+	//		//scale := (WWidth / ui.MiniMap.Sprite.Frame().Max.X) / 8
+	//		tr := pixel.V(WWidth - (ui.MiniMap.Sprite.Frame().Max.X / 2), WHeight - (ui.MiniMap.Sprite.Frame().Max.Y / 2))
+	//		ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr))
+	//		//ui.MiniMap.Sprite.Draw(r.Window, pixel.IM.Moved(tr).Scaled(pixel.V(tr.X+3, tr.Y+3), math.Min(4, 4)))
+	//		//ui.MiniMap.Msprite.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, math.Min(2, 2)).ScaledXY(pixel.ZV, pixel.V(1, -1)).Moved(tr))
+	//	}
 }
 
 func (r *Render) renderHealthBar(ui *Ui, p *Player, s *Scenes) {
@@ -188,58 +174,45 @@ func (r *Render) renderHealthBar(ui *Ui, p *Player, s *Scenes) {
 }
 
 func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
-	if s.ActiveElements[MainMenuActive] {
+	if s.CurrentScene == MainMenuScene {
 		w, h := WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
-		mat := pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h))
-		screenRect(mat, ui.MainMenu.StartButton.Sprite, r)
-		ui.MainMenu.Logo.Draw(r.Window, anchorTL(mat, ui.MainMenu.Logo, percentW(25), percentH(20), 5, &ui.MainMenu.StartButton))
+		ui.MainMenu.Logo.Draw(r.Window, anchorAndScale(ui.MainMenu.Logo, TL, pixel.V(percentW(0.5), percentH(3)), 4))
 
 		if ui.MainMenu.StartButton.Hovering {
-			ui.MainMenu.StartButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.HSprite, percentW(23), percentH(45), 2, &ui.MainMenu.StartButton))
+			ui.MainMenu.StartButton.HSprite.Draw(r.Window, anchor(ui.MainMenu.StartButton))
 		} else {
-			ui.MainMenu.StartButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.StartButton.Sprite, percentW(23), percentH(45), 2, &ui.MainMenu.StartButton))
+			ui.MainMenu.StartButton.Sprite.Draw(r.Window, anchor(ui.MainMenu.StartButton))
 		}
 
 		if ui.MainMenu.OptionsButton.Hovering {
-			ui.MainMenu.OptionsButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.OptionsButton.Sprite, percentW(23), percentH(50), 2, &ui.MainMenu.OptionsButton))
+
+			ui.MainMenu.OptionsButton.HSprite.Draw(r.Window, anchor(ui.MainMenu.OptionsButton))
 		} else {
-			ui.MainMenu.OptionsButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.OptionsButton.Sprite, percentW(23), percentH(50), 2, &ui.MainMenu.OptionsButton))
+			ui.MainMenu.OptionsButton.Sprite.Draw(r.Window, anchor(ui.MainMenu.OptionsButton))
 		}
 
 		if ui.MainMenu.AboutButton.Hovering {
-			ui.MainMenu.AboutButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.AboutButton.Sprite, percentW(23), percentH(55), 2, &ui.MainMenu.AboutButton))
+			ui.MainMenu.AboutButton.HSprite.Draw(r.Window, anchor(ui.MainMenu.AboutButton))
 		} else {
-			ui.MainMenu.AboutButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.AboutButton.Sprite, percentW(23), percentH(55), 2, &ui.MainMenu.AboutButton))
+			ui.MainMenu.AboutButton.Sprite.Draw(r.Window, anchor(ui.MainMenu.AboutButton))
 		}
 
 		if ui.MainMenu.ExitButton.Hovering {
-			ui.MainMenu.ExitButton.HSprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.ExitButton.Sprite, percentW(23), percentH(60), 2, &ui.MainMenu.ExitButton))
+			ui.MainMenu.ExitButton.HSprite.Draw(r.Window, anchor(ui.MainMenu.ExitButton))
 		} else {
-			ui.MainMenu.ExitButton.Sprite.Draw(r.Window, anchorTL(mat, ui.MainMenu.ExitButton.Sprite, percentW(23), percentH(60), 2, &ui.MainMenu.ExitButton))
+			ui.MainMenu.ExitButton.Sprite.Draw(r.Window, anchor(ui.MainMenu.ExitButton))
 		}
-
-
 	}
 }
 
 func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
 	if s.CurrentScene == GameScene {
-		scale := math.Round((WWidth / ui.Test.Objectives.Frame().Max.X) / 8)
-		tr := pixel.V(WWidth - (ui.Test.Objectives.Frame().Max.X / 2) * scale - 4, WHeight - (ui.Test.Objectives.Frame().Max.Y / 2) * scale - 4)
-		ui.Test.Objectives.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tr))
-
-		belowTR := pixel.V(WWidth - (ui.Test.Look.Frame().Max.X / 2) * scale - 4, WHeight - ((ui.Test.Objectives.Frame().Max.Y) + (ui.Test.Look.Frame().Max.Y / 2)) * scale - 10)
-		ui.Test.Look.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(belowTR))
-
-		bm := pixel.V(WWidth/2, (ui.Test.Bar.Frame().Max.Y / 2) * scale + 4)
-		ui.Test.Bar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(bm))
-
-		tl := pixel.V((ui.Test.HBar.Frame().Max.X/2) * scale + 4, WHeight - (ui.Test.HBar.Frame().Max.Y /2) * scale - 4)
-		ui.Test.HBar.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(tl))
-
-		buttonPos := pixel.V((ui.Test.Buttons.Frame().Max.X / 2) * scale + 4, WHeight / 3 + (WHeight/3) * scale + 4)
-		ui.Test.Buttons.Draw(r.Window, pixel.IM.Scaled(pixel.ZV, scale).Moved(buttonPos))
+		ui.Test.Objectives.Draw(r.Window, anchorAndScale(ui.Test.Objectives, TR, pixel.Vec{X: 0, Y: 0}, 1))
+		ui.Test.Look.Draw(r.Window, anchorAndScale(ui.Test.Look, TR, pixel.V(0, -ui.Test.Objectives.Frame().Max.Y-4), 1))
+		ui.Test.Bar.Draw(r.Window, anchorAndScale(ui.Test.Bar, BL, pixel.V(WWidth/2-(ui.Test.Bar.Frame().Max.X/2), 4), 1))
+		ui.Test.HBar.Draw(r.Window, anchorAndScale(ui.Test.HBar, TL, pixel.Vec{X: 0, Y: 0}, 1))
+		ui.Test.Buttons.Draw(r.Window, anchorAndScale(ui.Test.Buttons, BL, pixel.V(4, WHeight/2), 1))
 	}
 
 }

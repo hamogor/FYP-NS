@@ -6,7 +6,6 @@ import (
 )
 
 type LNode struct {
-
 }
 
 const (
@@ -14,13 +13,12 @@ const (
 	MinRoomSize = 3
 )
 
-
 func generateLevel(g *Game) {
 	l := &Level{
-		Tiles: [64][64]*Tile{},
-		Spawn: Position{X: 2, Y: 2},
-		Rooms: []Rectangle{},
-		Doors: []Position{},
+		Tiles:  [64][64]*Tile{},
+		Spawn:  Position{X: 2, Y: 2},
+		Rooms:  []Rectangle{},
+		Doors:  []Position{},
 		Actors: make([]*Actor, 0),
 	}
 	roomSize := 6
@@ -29,22 +27,19 @@ func generateLevel(g *Game) {
 	l.createDoors(roomSize, g.Assets)
 	l.crushWalls(roomSize, 0.45, g.Assets)
 	l.clearWallPoints(g.Assets)
-
-	l.print()
-
 	l.applyBitmask(g.Assets)
 	g.Level = l
 }
 
 func (l *Level) createRoomGrid(roomSize float64, a *Assets) {
-	xBorderIndex := ((LevelW - 1) /  math.Floor(roomSize + 1)) * (roomSize + 1)
-	yBorderIndex := ((LevelH - 1) / math.Floor(roomSize + 1)) * (roomSize + 1)
+	xBorderIndex := ((LevelW - 1) / math.Floor(roomSize+1)) * (roomSize + 1)
+	yBorderIndex := ((LevelH - 1) / math.Floor(roomSize+1)) * (roomSize + 1)
 
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
 			if float64(x) > xBorderIndex || float64(y) > yBorderIndex {
 				l.Tiles[x][y] = tile()
-			} else if x % (int(roomSize) + 1) == 0 || y % (int(roomSize) + 1) == 0 {
+			} else if x%(int(roomSize)+1) == 0 || y%(int(roomSize)+1) == 0 {
 				l.Tiles[x][y] = wall(0, a)
 			}
 		}
@@ -60,25 +55,25 @@ func (l *Level) fillVoid(a *Assets) {
 }
 
 func (l *Level) createDoors(roomSize int, a *Assets) {
-	xRooms := (LevelW - 1) / math.Floor(float64(roomSize) + 1)
-	yRooms := (LevelH - 1) / math.Floor(float64(roomSize) + 1)
+	xRooms := (LevelW - 1) / math.Floor(float64(roomSize)+1)
+	yRooms := (LevelH - 1) / math.Floor(float64(roomSize)+1)
 	for i := 1; i < int(xRooms); i++ {
 		for j := 1; j < int(yRooms); j++ {
 			if i == 1 {
-				y := i * (roomSize + 1) - random(1, roomSize)
+				y := i*(roomSize+1) - random(1, roomSize)
 				x := j * (roomSize + 1)
 				l.Tiles[x][y] = door("door_n_s", 1, a)
 			}
 			if j == 1 {
 				y := i * (roomSize + 1)
-				x := j * (roomSize + 1) - random(1, roomSize)
+				x := j*(roomSize+1) - random(1, roomSize)
 				l.Tiles[x][y] = door("door_n_s", 1, a)
 			}
 			y := i * (roomSize + 1)
-			x := j * (roomSize + 1) + random(1, roomSize)
+			x := j*(roomSize+1) + random(1, roomSize)
 			l.Tiles[x][y] = door("door_n_s", 1, a)
 
-			y = i * (roomSize + 1) + random(1, roomSize)
+			y = i*(roomSize+1) + random(1, roomSize)
 			x = j * (roomSize + 1)
 			l.Tiles[x][y] = door("door_n_s", 1, a)
 		}
@@ -86,13 +81,13 @@ func (l *Level) createDoors(roomSize int, a *Assets) {
 }
 
 func (l *Level) crushWalls(roomSize int, deleteChance float64, a *Assets) {
-	xRooms := (LevelW - 1) / math.Floor(float64(roomSize) + 1)
-	yRooms := (LevelH - 1) / math.Floor(float64(roomSize) + 1)
+	xRooms := (LevelW - 1) / math.Floor(float64(roomSize)+1)
+	yRooms := (LevelH - 1) / math.Floor(float64(roomSize)+1)
 	for i := 1; i < int(xRooms); i++ {
 		for j := 0; j < int(yRooms); j++ {
 			y := i * (roomSize + 1)
-			x := j * (roomSize + 1) + 1
-			chance := 0.0 + rand.Float64() * (1.0 - 0.0)
+			x := j*(roomSize+1) + 1
+			chance := 0.0 + rand.Float64()*(1.0-0.0)
 			if chance < deleteChance {
 				for k := 0; k < roomSize; k++ {
 					l.Tiles[x][y] = floor(0, a)
@@ -103,9 +98,9 @@ func (l *Level) crushWalls(roomSize int, deleteChance float64, a *Assets) {
 	}
 	for i := 1; i < int(yRooms); i++ {
 		for j := 1; j < int(xRooms); j++ {
-			y := i * (roomSize + 1) + 1
+			y := i*(roomSize+1) + 1
 			x := j * (roomSize + 1)
-			chance := 0.0 + rand.Float64() * (1.0 - 0.0)
+			chance := 0.0 + rand.Float64()*(1.0-0.0)
 			if chance < deleteChance {
 				for k := 0; k < roomSize; k++ {
 					l.Tiles[x][y] = floor(0, a)
@@ -117,8 +112,8 @@ func (l *Level) crushWalls(roomSize int, deleteChance float64, a *Assets) {
 }
 
 func (l *Level) clearWallPoints(a *Assets) {
-	for x := 0; x < LevelW - 1; x++ {
-		for y := 0; y < LevelH - 1; y++ {
+	for x := 0; x < LevelW-1; x++ {
+		for y := 0; y < LevelH-1; y++ {
 			if l.Tiles[x][y].Terrain == Wall {
 				pos := Position{X: x, Y: y}
 				if pos.N().terrain(l) == Floor &&
@@ -160,4 +155,3 @@ func (l *Level) applyBitmask(a *Assets) {
 		}
 	}
 }
-

@@ -9,6 +9,7 @@ import (
 	"image/png"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 type Assets struct {
@@ -156,6 +157,22 @@ func GetPixelPicture(path string) pixel.Picture {
 		log.Println(err)
 	}
 	return pixel.PictureDataFromImage(img)
+}
+
+func BuildSprite(path string) *pixel.Sprite {
+	pwd, _ := os.Getwd()
+	//file, err := os.Open(pwd + string(os.PathSeparator)  + path)
+	file, err := os.Open(pwd + filepath.FromSlash(path))
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	img, _, err := image.Decode(file)
+	if err != nil {
+		log.Println(err)
+	}
+	pic := pixel.PictureDataFromImage(img)
+	return pixel.NewSprite(pic, pic.Bounds())
 }
 
 func GetUnparsedJson(asset string) string {

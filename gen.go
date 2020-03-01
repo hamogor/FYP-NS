@@ -7,22 +7,20 @@ import (
 )
 
 const (
-	NumRooms int = 50
+	NumRooms    int = 50
 	MaxNodeSize int = 8
 	MinNodeSize int = 2
 )
 
-
 type tree []*BSPNode
 
 type BSPNode struct {
-	Area Rectangle
-	Hall Rectangle
-	Left *BSPNode
-	Right *BSPNode
+	Area       Rectangle
+	Hall       Rectangle
+	Left       *BSPNode
+	Right      *BSPNode
 	X, Y, W, H int
 }
-
 
 func generateLevelold(g *Game) {
 	nodes := make(tree, 0)
@@ -59,10 +57,10 @@ func generateLevelold(g *Game) {
 
 	for x := 0; x < LevelW; x++ {
 		for y := 0; y < LevelH; y++ {
-			if x == 0 || x == LevelW || x == LevelW - 1 {
+			if x == 0 || x == LevelW || x == LevelW-1 {
 				l.Tiles[x][y].Terrain = Wall
 			}
-			if y == 0 || y == LevelH || y == LevelH - 1 {
+			if y == 0 || y == LevelH || y == LevelH-1 {
 				l.Tiles[x][y].Terrain = Wall
 			}
 			pos := Position{X: x, Y: y}
@@ -80,7 +78,6 @@ func generateLevelold(g *Game) {
 	l.Spawn = Position{X: 1, Y: 1}
 	g.Level = l
 }
-
 
 func (node *BSPNode) split(tree *tree) bool {
 	if node.Left != nil || node.Right != nil {
@@ -103,14 +100,14 @@ func (node *BSPNode) split(tree *tree) bool {
 		return false // Too small to split further
 	}
 
-	split := random(MinNodeSize,maxS)
+	split := random(MinNodeSize, maxS)
 
 	if splitHorizontally {
 		node.Left = newNodeOld(node.X, node.Y, node.W, split)
 		node.Right = newNodeOld(node.X, node.Y+split, node.W, node.H-split)
 	} else {
 		node.Left = newNodeOld(node.X, node.Y, split, node.H)
-		node.Right = newNodeOld(node.X + split, node.Y, node.W - split, node.H)
+		node.Right = newNodeOld(node.X+split, node.Y, node.W-split, node.H)
 	}
 	*tree = append(*tree, node.Left, node.Right)
 	return true
@@ -142,7 +139,7 @@ func (node *BSPNode) createRooms(tree tree, l *Level) {
 	}
 }
 
-func (tree tree)  createWall(left, right Rectangle, l *Level) {
+func (tree tree) createWall(left, right Rectangle, l *Level) {
 	pos1 := left.center()
 	pos2 := right.center()
 	if random(0, 1) == 1 {
@@ -156,14 +153,14 @@ func (tree tree)  createWall(left, right Rectangle, l *Level) {
 }
 
 func (tree tree) createHorWall(x1, x2, y int, l *Level) {
-	minS, maxS := min(x1, x2), max(x1, x2) + 1
+	minS, maxS := min(x1, x2), max(x1, x2)+1
 	for x := minS; x < maxS; x++ {
 		l.Tiles[x][y].Terrain = Wall
 	}
 }
 
 func (tree tree) createVirWall(y1, y2, x int, l *Level) {
-	minS, maxS := min(y1, y2), max(y1,y2) + 1
+	minS, maxS := min(y1, y2), max(y1, y2)+1
 	for y := minS; y < maxS; y++ {
 		l.Tiles[x][y].Terrain = Wall
 	}
@@ -171,7 +168,7 @@ func (tree tree) createVirWall(y1, y2, x int, l *Level) {
 
 func (tree tree) createRoom(room Rectangle, l *Level) {
 	for x := room.X + 1; x < room.Width; x++ {
-		for y := room.Y+1; y < room.Height; y++ {
+		for y := room.Y + 1; y < room.Height; y++ {
 			l.Tiles[x][y].Terrain = Floor
 		}
 	}
@@ -184,16 +181,16 @@ func randomBool() bool {
 }
 
 func (node BSPNode) room() Rectangle {
-	if node.Area.Width != 0  {
+	if node.Area.Width != 0 {
 		return node.Area
 	} else {
-		if node.Left != nil  {
+		if node.Left != nil {
 			node.Left.Area = node.Left.room()
 		}
 		if node.Right != nil {
 			node.Right.Area = node.Right.room()
 		}
-		if node.Left == nil && node.Right == nil  {
+		if node.Left == nil && node.Right == nil {
 			return Rectangle{}
 		} else if node.Right.Area.Width != 0 {
 			return node.Left.Area
@@ -209,24 +206,24 @@ func (node BSPNode) room() Rectangle {
 
 func random(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max - min) + min
+	return rand.Intn(max-min) + min
 }
 
-func newNodeOld(x,y,w,h int) *BSPNode {
+func newNodeOld(x, y, w, h int) *BSPNode {
 	return &BSPNode{
-		Area:   Rectangle{
+		Area: Rectangle{
 			X:      x,
 			Y:      y,
 			Width:  w,
 			Height: h,
 		},
-		Hall:   Rectangle{},
-		Left:   nil,
-		Right:  nil,
-		W: w,
-		H: h,
-		X: x,
-		Y: y,
+		Hall:  Rectangle{},
+		Left:  nil,
+		Right: nil,
+		W:     w,
+		H:     h,
+		X:     x,
+		Y:     y,
 	}
 }
 

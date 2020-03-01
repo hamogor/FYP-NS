@@ -1,7 +1,6 @@
 package main
 
 type Ai struct {
-
 }
 
 func (a *Actor) move(pos Position, g *Game) {

@@ -28,7 +28,6 @@ func initialiseGame() *Game {
 	g.initData()
 	g.initScenes()
 
-
 	return g
 }
 

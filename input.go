@@ -49,31 +49,32 @@ func (g *Game) handleInput() {
 		}
 	}
 
-
 	if g.Scenes.CurrentScene == MainMenuScene {
 		mouse := g.Render.Window.MousePosition()
+
 		if g.Ui.MainMenu.StartButton.Rect.Contains(mouse) {
 			g.Ui.MainMenu.StartButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.StartButton.Hovering = false
 		}
+
 		if g.Ui.MainMenu.OptionsButton.Rect.Contains(mouse) {
 			g.Ui.MainMenu.OptionsButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.OptionsButton.Hovering = false
 		}
+
 		if g.Ui.MainMenu.AboutButton.Rect.Contains(mouse) {
 			g.Ui.MainMenu.AboutButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.AboutButton.Hovering = false
 		}
+
 		if g.Ui.MainMenu.ExitButton.Rect.Contains(mouse) {
 			g.Ui.MainMenu.ExitButton.Hovering = true
 		} else {
 			g.Ui.MainMenu.ExitButton.Hovering = false
 		}
-
-
 
 		if g.Ui.MainMenu.StartButton.Hovering && g.Render.Window.JustPressed(pixelgl.MouseButton1) {
 			startButton(g.Scenes)
@@ -82,8 +83,6 @@ func (g *Game) handleInput() {
 			exitButton(g.Scenes)
 		}
 	}
-
-
 
 	if g.Player.Actor.ActionTaken {
 		g.Player.Actor.calculateFov()
