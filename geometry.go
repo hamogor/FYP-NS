@@ -68,20 +68,20 @@ func anchor(button *Button) pixel.Matrix {
 	off := &button.Offset
 	switch button.Corner {
 	case TL:
-		v = pixel.V((r.Max.X/2 + off.X) * button.Scale,
-			WHeight - (r.Max.Y/2 + off.Y) * button.Scale - edgeOffset)
+		v = pixel.V((r.Max.X/2+off.X)*button.Scale,
+			WHeight-(r.Max.Y/2+off.Y)*button.Scale-edgeOffset)
 		break
 	case TR:
-		v = pixel.V(WWidth - (r.Max.X / 2 + off.X) * button.Scale - edgeOffset,
-			WHeight - (r.Max.Y / 2 + off.Y) * button.Scale - edgeOffset)
+		v = pixel.V(WWidth-(r.Max.X/2+off.X)*button.Scale-edgeOffset,
+			WHeight-(r.Max.Y/2+off.Y)*button.Scale-edgeOffset)
 		break
 	case BL:
-		v = pixel.V(WWidth - (r.Max.X / 2 + off.X) * button.Scale + edgeOffset,
-			(r.Max.Y / 2 + off.Y) * button.Scale - edgeOffset)
+		v = pixel.V(WWidth-(r.Max.X/2+off.X)*button.Scale+edgeOffset,
+			(r.Max.Y/2+off.Y)*button.Scale-edgeOffset)
 		break
 	case BR:
-		v = pixel.V(WWidth - (r.Max.X / 2 + off.X) * button.Scale - edgeOffset,
-			(r.Max.Y / 2 + off.Y) * button.Scale - edgeOffset)
+		v = pixel.V(WWidth-(r.Max.X/2+off.X)*button.Scale-edgeOffset,
+			(r.Max.Y/2+off.Y)*button.Scale-edgeOffset)
 		break
 	}
 	button.Pos = v
@@ -92,19 +92,18 @@ func anchor(button *Button) pixel.Matrix {
 func (button *Button) setRect() {
 
 	button.Rect = &pixel.Rect{
-		Min: pixel.Vec{X: button.Pos.X - (button.Sprite.Frame().Max.X/2 * button.Scale) , Y: button.Pos.Y - (button.Sprite.Frame().Max.Y/2 * button.Scale)},
-		Max: pixel.Vec{X: button.Pos.X + (button.Sprite.Frame().Max.X/2 * button.Scale), Y: button.Pos.Y + (button.Sprite.Frame().Max.Y/2 * button.Scale)},
+		Min: pixel.Vec{X: button.Pos.X - (button.Sprite.Frame().Max.X / 2 * button.Scale), Y: button.Pos.Y - (button.Sprite.Frame().Max.Y / 2 * button.Scale)},
+		Max: pixel.Vec{X: button.Pos.X + (button.Sprite.Frame().Max.X / 2 * button.Scale), Y: button.Pos.Y + (button.Sprite.Frame().Max.Y / 2 * button.Scale)},
 	}
 	//fmt.Print(button.Rect, "\n")
-
 
 }
 
 func anchorTL(mat pixel.Matrix, sprite *pixel.Sprite, offX, offY, scale float64, btn *Button) pixel.Matrix {
 	v := pixel.V(sprite.Frame().Max.X/2+offX, (WHeight-sprite.Frame().Max.Y/2)-offY) // Origin
 	rect := pixel.Rect{
-		Min: pixel.Vec{X: v.X - (sprite.Frame().Max.X*scale) / scale, Y: v.Y - (sprite.Frame().Max.Y*scale) / scale},
-		Max: pixel.Vec{X: v.X + (sprite.Frame().Max.X*scale) / scale, Y: v.Y + (sprite.Frame().Max.Y*scale) / scale},
+		Min: pixel.Vec{X: v.X - (sprite.Frame().Max.X*scale)/scale, Y: v.Y - (sprite.Frame().Max.Y*scale)/scale},
+		Max: pixel.Vec{X: v.X + (sprite.Frame().Max.X*scale)/scale, Y: v.Y + (sprite.Frame().Max.Y*scale)/scale},
 	}
 	if btn != nil {
 		btn.Rect = &rect

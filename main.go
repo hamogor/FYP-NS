@@ -27,7 +27,6 @@ func initialiseGame() *Game {
 	generateLevel(g) //TESTING
 	g.initData()
 	g.initScenes()
-
 	return g
 }
 

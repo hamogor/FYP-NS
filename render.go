@@ -89,14 +89,6 @@ func (g *Game) render() {
 	g.Render.Env.Canvas.SetMatrix(canvasMatrix)
 	g.Render.Actors.Canvas.SetMatrix(canvasMatrix)
 
-	buttonrect := imdraw.New(nil)
-	buttonrect.Clear()
-	buttonrect.Color = colornames.Darkred
-	buttonrect.Push(g.Ui.MainMenu.StartButton.Rect.Min)
-	buttonrect.Push(g.Ui.MainMenu.StartButton.Rect.Max)
-	buttonrect.Rectangle(0)
-	buttonrect.Draw(g.Render.Window)
-
 	worldMatrix := pixel.IM.Moved(g.Render.Window.Bounds().Center())
 	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.Actors.Canvas.Draw(g.Render.Window, worldMatrix)
@@ -174,7 +166,10 @@ func (r *Render) renderHealthBar(ui *Ui, p *Player, s *Scenes) {
 }
 
 func (r *Render) renderMainMenu(ui *Ui, s *Scenes) {
+
 	if s.CurrentScene == MainMenuScene {
+
+
 		w, h := WWidth/ui.MainMenu.Background.Frame().Max.X, WHeight/ui.MainMenu.Background.Frame().Max.Y
 		ui.MainMenu.Background.Draw(r.Window, pixel.IM.ScaledXY(pixel.ZV, pixel.V(w, h)).Moved(r.Window.Bounds().Center()))
 		ui.MainMenu.Logo.Draw(r.Window, anchorAndScale(ui.MainMenu.Logo, TL, pixel.V(percentW(0.5), percentH(3)), 4))
