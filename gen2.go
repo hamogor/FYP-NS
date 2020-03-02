@@ -28,7 +28,6 @@ func generateLevel(g *Game) {
 	l.crushWalls(roomSize, 0.45, g.Assets)
 	l.clearWallPoints(g.Assets)
 	l.applyBitmask(g.Assets)
-	l.createLights(g.Assets, g.Render)
 	g.Level = l
 }
 
@@ -157,16 +156,5 @@ func (l *Level) applyBitmask(a *Assets) {
 	}
 }
 
-func (l *Level) createLights(a *Assets, r *Render) {
-	l.Lights = append(l.Lights, createLight(r))
 
 
-
-	for x := 0; x < LevelW; x++ {
-		for y := 0; y < LevelH; y++ {
-			if l.Tiles[x][y].Terrain == Wall && l.Tiles[x][y].Bitmask == 7 {
-
-			}
-		}
-	}
-}

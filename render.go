@@ -94,7 +94,6 @@ func (g *Game) render() {
 	g.Render.Env.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.Actors.Canvas.Draw(g.Render.Window, worldMatrix)
 	g.Render.renderUi(g.Player, g.Ui, g.Scenes)
-	g.Render.renderLights(g.Ui, g.Scenes, g.Level)
 	g.Render.Window.Update()
 }
 
@@ -214,13 +213,7 @@ func (r *Render) renderTest9Slice(ui *Ui, s *Scenes) {
 
 }
 
-func (r *Render) renderLights(ui *Ui, s *Scenes, l *Level) {
-	if s.CurrentScene == GameScene {
-		for i := range l.Lights {
-			l.Lights[i].applyLight(r)
-		}
-	}
-}
+
 
 func ScreenToWorldSpace(r *Render, mat pixel.Matrix) pixel.Vec {
 	return mat.Unproject(r.Window.MousePosition())

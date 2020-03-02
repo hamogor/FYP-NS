@@ -6,7 +6,6 @@ type Level struct {
 	Rooms  []Rectangle
 	Doors  []Position
 	Actors []*Actor
-	Lights []*Light
 }
 
 func (l *Level) SizeX() int {
