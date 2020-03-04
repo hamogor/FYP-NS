@@ -143,6 +143,8 @@ func (r *Render) renderMiniMap(p *Player, ui *Ui, s *Scenes) {
 	//	}
 }
 
+
+
 func (r *Render) renderHealthBar(ui *Ui, p *Player, s *Scenes) {
 	if s.ActiveElements[PlayerHealthActive] {
 		red := imdraw.New(nil)

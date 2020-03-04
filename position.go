@@ -47,28 +47,6 @@ func (pos Position) NW() Position {
 	return Position{X: pos.X - 1, Y: pos.Y + 1}
 }
 
-func (pos Position) cardinalWalls(l *Level) bool {
-	n, e, s, w := false, false, false, false
-	if pos.inLevel() {
-		if pos.N().inLevel() && l.Tiles[pos.N().X][pos.N().Y].Terrain == Wall {
-			n = true
-		}
-		if pos.E().inLevel() && l.Tiles[pos.E().X][pos.E().Y].Terrain == Wall {
-			e = true
-		}
-		if pos.S().inLevel() && l.Tiles[pos.S().X][pos.S().Y].Terrain == Wall {
-			s = true
-		}
-		if pos.W().inLevel() && l.Tiles[pos.W().X][pos.W().Y].Terrain == Wall {
-			w = true
-		}
-		if n == true && e == true && s == true && w == true {
-			return true
-		}
-	}
-	return false
-}
-
 func (pos Position) sToVec() pixel.Vec {
 	return pixel.V(float64(pos.X*SpriteW), float64(pos.Y*SpriteH))
 }
@@ -92,6 +70,15 @@ func (pos Position) floor(l *Level) bool {
 	return false
 }
 
+func (pos Position) actor(l *Level) bool {
+	for i := range l.Actors {
+		if l.Actors[i].Pos == pos {
+			return true
+		}
+	}
+	return false
+}
+
 func (pos Position) inLevel() bool {
 	if pos.X < 0 || pos.Y < 0 || pos.X >= LevelW || pos.Y >= LevelH {
 		return false
@@ -111,3 +98,5 @@ func tilePos(x, y int) pixel.Matrix {
 func RoundFloat(f float64) float64 {
 	return float64(int64(f))
 }
+
+

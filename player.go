@@ -11,3 +11,8 @@ func (g *Game) initPlayer() {
 		Depth: 0,
 	}
 }
+
+func (g *Game) inputToAction(p *Player, l *Level, pos Position) {
+	if !pos.actor(l) && pos.floor(l) || pos.terrain(l) == OpenDoor {
+	}
+}

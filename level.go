@@ -97,13 +97,7 @@ func resolveDoors(l *Level, a *Assets) {
 	}
 }
 
-func (pos Position) resolveDoorTypeAndOpen(l *Level, a *Assets) {
-	if l.Tiles[pos.X][pos.Y].Bitmask == 0 {
-		l.Tiles[pos.X][pos.Y] = openDoor("door_w_e", a, 0)
-	} else if l.Tiles[pos.X][pos.Y].Bitmask == 1 {
-		l.Tiles[pos.X][pos.Y] = openDoor("door_n_s", a, 1)
-	}
-}
+
 
 func (pos Position) ResolveBitMaskWall(l *Level) []bool {
 	bit := make([]bool, 8)

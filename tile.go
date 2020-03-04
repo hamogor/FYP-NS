@@ -9,6 +9,8 @@ type Tile struct {
 	Bitmask int
 }
 
+type TileAction func(l *Level, pos Position)
+
 type Sprites struct {
 	L *pixel.Sprite
 	D *pixel.Sprite
@@ -97,18 +99,10 @@ func openDoor(dir string, a *Assets, mask int) *Tile {
 	}
 }
 
-//func openDoor(pos Position, g *Game) {
-//	if g.Level.Tiles[pos.X][pos.Y].Bitmask == 0 {
-//		g.Level.Tiles[pos.X][pos.Y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["door_w_e"][2])
-//		g.Level.Tiles[pos.X][pos.Y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["door_w_e"][3])
-//		g.Level.Tiles[pos.X][pos.Y].Terrain = OpenDoor
-//		g.Level.Tiles[pos.X][pos.Y].Blocks = false
-//	} else if g.Level.Tiles[pos.X][pos.Y].Bitmask == 1 {
-//		g.Level.Tiles[pos.X][pos.Y].Sprites.L = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["door_n_s"][2])
-//		g.Level.Tiles[pos.X][pos.Y].Sprites.D = pixel.NewSprite(g.Assets.Sheets.Environment, g.Assets.Env["door_n_s"][3])
-//		g.Level.Tiles[pos.X][pos.Y].Terrain = OpenDoor
-//		g.Level.Tiles[pos.X][pos.Y].Blocks = false
-//	}
-//	g.Player.Actor.Fov.Block(pos.X, pos.Y, false)
-//	g.Player.Actor.calculateFov()
-//}
+func (pos Position) resolveDoorTypeAndOpen(l *Level, a *Assets) {
+	if l.Tiles[pos.X][pos.Y].Bitmask == 0 {
+		l.Tiles[pos.X][pos.Y] = openDoor("door_w_e", a, 0)
+	} else if l.Tiles[pos.X][pos.Y].Bitmask == 1 {
+		l.Tiles[pos.X][pos.Y] = openDoor("door_n_s", a, 1)
+	}
+}

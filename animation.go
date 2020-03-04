@@ -45,7 +45,6 @@ func (a *Actor) updateAnimState() {
 	case idle:
 		a.play(a.Anims["player_idle"])
 	}
-
 }
 
 func (a *Actor) play(anim *Animation) {
@@ -63,3 +62,4 @@ func (a *Actor) play(anim *Animation) {
 		}
 	}
 }
+

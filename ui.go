@@ -8,6 +8,7 @@ import (
 type Ui struct {
 	MainMenu MainMenu
 	Test     Test
+	ActionCursor ActionCursor
 }
 
 type buttonHandler func(s *Scenes)
@@ -18,6 +19,11 @@ type Test struct {
 	Bar        *pixel.Sprite
 	HBar       *pixel.Sprite
 	Buttons    *pixel.Sprite
+}
+
+type ActionCursor struct {
+	Anim map[string]*Animation
+	CAnim *CAnim
 }
 
 type MainMenu struct {
@@ -96,10 +102,21 @@ func (g *Game) initUi() {
 			HBar:       BuildSprite(uiPaths["hbar"]),
 			Buttons:    BuildSprite(uiPaths["buttons"]),
 		},
+		ActionCursor: g.buildActionCursor(),
 	}
 
 	g.Ui = ui
 }
+
+func (g *Game) buildActionCursor() ActionCursor {
+	anim := make(map[string]*Animation, 0)
+	anim["cursor"] = g.Assets.Anims["cursor"]
+	return ActionCursor{
+		Anim:  anim,
+		CAnim: buildCAnim(),
+	}
+}
+
 
 func startButton(s *Scenes) {
 	if s.CurrentScene == MainMenuScene {
