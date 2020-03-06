@@ -34,7 +34,7 @@ around the room / do other stuff
 Try and frame the generator so that there are (typically) 3 encounters between objectives. 
 * One war between any number of factions
 
-
+Player starts cryogenically frozen.
 
 First level:
 Can also just kill him, even after taking the reward for the mission
@@ -45,17 +45,9 @@ in the level through a series of goals introducing the player to various aspects
 The mission should have a final encounter of a skirmish between the two factions that the NPC ally is NOT. 
 e.g. if ally is faction a, then there is a skirmish between faction b and c. 
 
-#### Ally system: 
-Depending on the result of the first level:
-1. Killing  the ally to get both faction b and c rewards (reward acts as faction influence to spend on skill tree)
-2. Siding with the ally to to gain influence with their faction (encounter outside the room with boss of ally) and he offers you the reward of 
-his faction (to spend on skill tree) (faction a)
-
-When damage is done to an enemy and an ally they will simply respond with "hey watch it (friendly fire)"
-but if damage is just done to an ally outright then all of them will become hostile.
-
-Need better incentive to switch often (large variety in rewards.)
-
+### Narrator:
+Have a portrait sprite + text box to guide player to objectives.
+"im getting high readings of .. in the area"
 
 
 ### Ui:
@@ -82,6 +74,8 @@ Any time you need to show a keybinding, give two options "OK", "EDIT". Edit brin
 ONLY the keybinds that were displayed. This way, players can slowly edit the keybinds to their liking. 
 Also dont display what key is being overwritten unless its a bool CUSTOM one. Its ok to edit default keys without
 confirmation.
+
+UI Scaling: http://community.monogame.net/t/solved-right-way-to-use-matrices-to-scale-a-gui-across-different-display-configs/10590/5
 
 ### RPG Elements:
 
