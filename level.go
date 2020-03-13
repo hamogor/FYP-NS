@@ -1,4 +1,4 @@
-package main
+package NS
 
 type Level struct {
 	Tiles  [LevelW][LevelH]*Tile

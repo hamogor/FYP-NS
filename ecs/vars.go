@@ -1,4 +1,4 @@
-package NS
+package ecs
 
 import (
 	"image"
@@ -13,8 +13,7 @@ var (
 	tileSheetOutputPath           = "./assets/tiles.png"
 	spriteSheetOutputPath         = "./assets/sprites.png"
 	frames                        = 0
-	dt                            = 0.0
-	edgeOffset            float64 = 4
+	dt                           float32 = 0.0
 	second                        = time.Tick(time.Second)
 	last                          = time.Now()
 	WHeight               float64 = 768
@@ -26,8 +25,6 @@ var (
 		"/d_floor",
 		"/door_n_s",
 		"/door_w_e",
-		"/detail_floor_l",
-		"/detail_floor_d",
 	}
 	spritePaths = []string{ // Name and filename of sprite assets
 		"/player_idle",

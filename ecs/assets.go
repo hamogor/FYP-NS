@@ -1,4 +1,4 @@
-package NS
+package ecs
 
 import (
 	"bufio"
@@ -12,15 +12,15 @@ import (
 	"path/filepath"
 )
 
-type Assets struct {
+type AssetStore struct {
 	Sheets Sheets
-	Env    map[string][]pixel.Rect
-	Anims  map[string]*Animation
+	Env map[string][]pixel.Rect
+	Anims map[string]*Animation
 }
 
 type Sheets struct {
-	Environment pixel.Picture
-	Sprites     pixel.Picture
+	Env *pixel.Picture
+	Sprites *pixel.Picture
 }
 
 type Unparsed struct {
@@ -29,20 +29,20 @@ type Unparsed struct {
 	json string
 }
 
-func (g *Game) buildAssets() {
-	envsheet, env := BuildEnvironmentSheet()
-	spritesheet, anims := BuildSpriteSheet()
-	g.Assets = &Assets{
+func InitAssetStore() *AssetStore {
+	envSheet, env := BuildEnv()
+	spritesheet, anims := BuildSprites()
+	return &AssetStore{
 		Sheets: Sheets{
-			Environment: envsheet,
-			Sprites:     spritesheet,
+			Env:     &envSheet,
+			Sprites: &spritesheet,
 		},
-		Env:   env,
-		Anims: anims,
+		Env:    env,
+		Anims:  anims,
 	}
 }
 
-func BuildEnvironmentSheet() (pixel.Picture, map[string][]pixel.Rect) {
+func BuildEnv() (pixel.Picture, map[string][]pixel.Rect) {
 	outputLen, unparsedTiles := GetUnparsedAssets(tilePaths)
 	outputImg := image.NewRGBA(image.Rectangle{Max: image.Point{X: outputLen, Y: int(TileH)}})
 	BuildImage(unparsedTiles, outputImg, tileSheetOutputPath)
@@ -59,7 +59,7 @@ func BuildEnvironmentSheet() (pixel.Picture, map[string][]pixel.Rect) {
 	return sheet, environmentMap
 }
 
-func BuildSpriteSheet() (pixel.Picture, map[string]*Animation) {
+func BuildSprites() (pixel.Picture, map[string]*Animation) {
 	outputLen, unparsedAnims := GetUnparsedAssets(spritePaths)
 	outputImg := image.NewRGBA(image.Rectangle{Max: image.Point{X: outputLen, Y: int(TileH)}})
 	BuildImage(unparsedAnims, outputImg, spriteSheetOutputPath)
