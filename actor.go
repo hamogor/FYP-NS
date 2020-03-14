@@ -1,4 +1,4 @@
-package NS
+package main
 
 type Actor struct {
 	Name        string
@@ -9,6 +9,7 @@ type Actor struct {
 	CAnim       *CAnim
 	ActionTaken bool
 	Direction   float64
+	State       AiState
 }
 
 func newPlayerActor(name string, pos Position, a *Assets) *Actor {
@@ -24,4 +25,8 @@ func newPlayerActor(name string, pos Position, a *Assets) *Actor {
 		Direction: -1,
 		HP:        100,
 	}
+}
+
+func (l *Level) newActor(state AiState, x, y int, a *Assets) {
+
 }

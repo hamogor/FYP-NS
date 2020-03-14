@@ -1,4 +1,4 @@
-package NS
+package main
 
 type Scenes struct {
 	CurrentScene   SceneName

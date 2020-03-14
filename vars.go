@@ -1,4 +1,4 @@
-package NS
+package main
 
 import (
 	"image"
@@ -26,8 +26,6 @@ var (
 		"/d_floor",
 		"/door_n_s",
 		"/door_w_e",
-		"/detail_floor_l",
-		"/detail_floor_d",
 	}
 	spritePaths = []string{ // Name and filename of sprite assets
 		"/player_idle",

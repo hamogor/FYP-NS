@@ -1,4 +1,4 @@
-package NS
+package main
 
 func (g *Game) initData() {
 	g.Player.Actor.Fov = initFov(g.Level)

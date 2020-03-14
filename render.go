@@ -1,4 +1,4 @@
-package NS
+package main
 
 import (
 	"github.com/faiface/pixel"

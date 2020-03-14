@@ -1,4 +1,4 @@
-package NS
+package main
 
 type Player struct {
 	Actor *Actor
