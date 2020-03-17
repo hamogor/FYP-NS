@@ -70,13 +70,8 @@ func (pos Position) floor(l *Level) bool {
 	return false
 }
 
-func (pos Position) actor(l *Level) bool {
-	for i := range l.Actors {
-		if l.Actors[i].Pos == pos {
-			return true
-		}
-	}
-	return false
+func (pos Position) actor(l *Level) {
+
 }
 
 func (pos Position) inLevel() bool {

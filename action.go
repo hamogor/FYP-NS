@@ -16,6 +16,7 @@ func (a *Actor) move(pos Position, g *Game) {
 	}
 	if !g.Level.Tiles[pos.X][pos.Y].Blocks {
 		a.Pos = pos
+		PPos = pos
 	}
 	if g.Level.Tiles[pos.X][pos.Y].Terrain == Door {
 		pos.resolveDoorTypeAndOpen(g.Level, g.Assets)

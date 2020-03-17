@@ -12,7 +12,6 @@ type Level struct {
 	Spawn  Position
 	Rooms  []Rectangle
 	Doors  []Position
-	Actors []*Actor
 	Items  [LevelW][LevelH]*Item
 }
 
@@ -315,7 +314,6 @@ func generateLevel(g *Game) {
 		Spawn:  Position{X: 2, Y: 2},
 		Rooms:  []Rectangle{},
 		Doors:  []Position{},
-		Actors: make([]*Actor, 0),
 	}
 	roomSize := 6
 	l.fillVoid(g.Assets)

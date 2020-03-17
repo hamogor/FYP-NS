@@ -43,6 +43,7 @@ type DijkstraMap struct {
 	Points       [][]Rank
 	M            Map
 	NeigbourFunc func(d *DijkstraMap, x, y int) []WeightedPoint
+	CalcFunc Calc
 }
 
 // WeightedPoint is a Point that also has a rank
@@ -58,7 +59,7 @@ func (d *WeightedPoint) GetXY() (int, int) {
 }
 
 // BlankDMap creates a blank Dijkstra map to be used with the map passed to it
-func BlankDMap(m Map, neigbourfunc func(d *DijkstraMap, x, y int) []WeightedPoint) *DijkstraMap {
+func BlankDMap(m Map, neigbourfunc func(d *DijkstraMap, x, y int) []WeightedPoint, calc Calc) *DijkstraMap {
 	ret := make([][]Rank, m.SizeX())
 	for i := range ret {
 		ret[i] = make([]Rank, m.SizeY())
@@ -66,7 +67,12 @@ func BlankDMap(m Map, neigbourfunc func(d *DijkstraMap, x, y int) []WeightedPoin
 			ret[i][j] = RankMax
 		}
 	}
-	return &DijkstraMap{ret, m, neigbourfunc}
+	return &DijkstraMap{
+		Points:       ret,
+		M:            m,
+		NeigbourFunc: neigbourfunc,
+		CalcFunc:     calc,
+	}
 }
 
 // ManhattanNeighbours returns the neighbours of the block x, y to the
@@ -327,23 +333,13 @@ func (d *DijkstraMap) CalculateFleeMap(p *Player, l *Level) {
 
 
 
-func (d *DijkstraMap) copyDmap(l *Level, a *Actor) *DijkstraMap {
+func (d *DijkstraMap) copy() *DijkstraMap {
 	copyDmap := &DijkstraMap{
 		Points:       d.Points,
 		M:            d.M,
 		NeigbourFunc: d.NeigbourFunc,
 	}
 	return copyDmap
-}
-
-func (d *DijkstraMap) MutateActorPositions(l *Level, j int) {
-	for i := range l.Actors {
-		if i == j {
-			break
-		} else if l.Actors[i].State != PlayerAi {
-			d.Points[l.Actors[i].Pos.X][l.Actors[i].Pos.Y] = RankMax
-		}
-	}
 }
 
 
@@ -363,36 +359,5 @@ func (d *DijkstraMap) CalculateRangeMap(p *Player, l *Level) {
 	d.Recalc(points...)
 }
 
-func (d *DijkstraMap) CalculateFlankMap(p *Player, l *Level) {
-	alreadyIncreased := make([]Position, 0)
-	for i := range l.Actors {
-		if l.Actors[i].State == FlankAi {
-			neighbours := DiagonalNeighboursAtRadius2(d, l.Actors[i].Pos.X, l.Actors[i].Pos.Y)
-			for j := range neighbours {
-				if neighbours[j].X < LevelW && neighbours[j].Y < LevelH && neighbours[j].X > 0 && neighbours[j].Y > 0 {
-					for k := range alreadyIncreased {
-						if alreadyIncreased[k].X == neighbours[j].X && alreadyIncreased[k].Y == neighbours[j].Y {
-							break
-						} else {
-							d.Points[neighbours[j].X][neighbours[j].Y] += 3
-							alreadyIncreased = append(alreadyIncreased, Position{X: neighbours[j].X, Y: neighbours[j].Y})
-						}
-					}
-
-				}
-			}
-			//d.Points[l.Actors[i].Pos.X][l.Actors[i].Pos.Y] += 2
-		}
-		//if l.Actors[i].State == FlankAi {
-		//	neighbours := DiagonalNeighbours(l.Actors[i].DMap, l.Actors[i].Pos.X, l.Actors[i].Pos.Y)
-		//	for j := range neighbours {
-		//		if neighbours[j].X < LevelW && neighbours[j].Y < LevelH && neighbours[j].X > 0 && neighbours[j].Y > 0 {
-		//			l.Actors[i].DMap.Points[neighbours[j].X][neighbours[j].Y] += 3
-		//		}
-		//	}
-		//}
-
-	}
-}
 
 

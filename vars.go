@@ -14,6 +14,7 @@ var (
 	spriteSheetOutputPath         = "./assets/sprites.png"
 	frames                        = 0
 	dt                            = 0.0
+	PPos						  = Position{X: 0, Y: 0}
 	edgeOffset            float64 = 4
 	second                        = time.Tick(time.Second)
 	last                          = time.Now()

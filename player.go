@@ -13,6 +13,6 @@ func (g *Game) initPlayer() {
 }
 
 func (g *Game) inputToAction(p *Player, l *Level, pos Position) {
-	if !pos.actor(l) && pos.floor(l) || pos.terrain(l) == OpenDoor {
+	if pos.floor(l) || pos.terrain(l) == OpenDoor {
 	}
 }

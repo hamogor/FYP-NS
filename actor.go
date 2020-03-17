@@ -7,9 +7,11 @@ type Actor struct {
 	Anims       map[string]*Animation
 	Fov         *FovMap
 	CAnim       *CAnim
+	Action      *Action
 	ActionTaken bool
 	Direction   float64
 	State       AiState
+	DMap        *DijkstraMap
 }
 
 func newPlayerActor(name string, pos Position, a *Assets) *Actor {

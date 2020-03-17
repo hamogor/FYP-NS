@@ -11,7 +11,7 @@ type Game struct {
 	Assets *Assets
 	Level  *Level
 	Player *Player
-	Ai     *Ai
+	Ai     *AiManager
 	Ui     *Ui
 	Scenes *Scenes
 }
@@ -22,10 +22,12 @@ func initialiseGame() *Game {
 	g.initRender()
 	g.initPlayer()
 	g.initLevel()
+
 	g.initUi()
 	generateLevel(g) //TESTING
 	g.initData()
 	g.initScenes()
+	g.initAi()
 	return g
 }
 
