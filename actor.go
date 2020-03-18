@@ -11,6 +11,8 @@ type Actor struct {
 	ActionTaken bool
 	Direction   float64
 	State       AiState
+	Type        AiState
+	Ammo        int
 	DMap        *DijkstraMap
 }
 

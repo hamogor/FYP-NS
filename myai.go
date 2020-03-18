@@ -65,3 +65,44 @@ func FlankCalculate(actors []*Actor, d *DijkstraMap, points ...Point) {
 	}
 }
 
+func (a *Actor) MoveTransition() {
+	if a.HP <= 50 {
+		a.State = FleeAi
+	}
+	//if a.Type == RangeAi && AMMO_AVAILABLE { state = type }
+}
+
+func (a *Actor) FleeTransition() {
+	if a.HP > 50 {
+		a.State = a.Type
+	}
+}
+
+func (a *Actor) RangeTransition() {
+	if a.Ammo == 0 {
+		a.State = MoveAi
+	}
+}
+
+func (a *Actor) FlankTransition() {
+
+}
+
+func (a *Actor) MoveUnderlying() {
+
+}
+
+func (a *Actor) RangeUnderlying() {
+
+}
+
+func (a *Actor) FleeUnderlying() {
+
+}
+
+func (a *Actor) FlankUnderlying() {
+
+}
+
+
+
