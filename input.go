@@ -87,6 +87,7 @@ func (g *Game) handleInput() {
 	if g.Player.Actor.ActionTaken {
 		g.Player.Actor.calculateFov()
 		g.Player.updateMiniMap(g.Level, g.Ui)
+		g.Ai.Update()
 	}
 
 }

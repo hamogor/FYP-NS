@@ -36,11 +36,13 @@ func (ai *AiManager) Remove(state AiState) {
 func (ai *AiManager) Update() {
 	ai.CalulateFovs() 			 // 1. Calculate Field of Views
 	ai.CheckTransitions()        // 2. Update active composite states
+	ai.SetMaps()                 // 3. Copy Composite maps to each NPC.
 }
 
 func NewAiManager() *AiManager {
 	return &AiManager{
 		Composite: make(map[AiState]*DijkstraMap, 0),
+		Actors: make([]*Actor, 0),
 	}
 }
 

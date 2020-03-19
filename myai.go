@@ -5,10 +5,10 @@ const (
 	FleeAi           = 1
 	FlankAi          = 2
 	RangeAi          = 3
+	PlayerAi         = 4
 )
 
-func (g *Game) initAi() {
-	g.Ai = NewAiManager()
+func (g *Game) initMaps() {
 	g.Ai.Add(MoveAi, MoveCalculate, g.Level, Goal(g.Player.Actor.Pos))
 	g.Ai.Add(FleeAi, FleeCalculate, g.Level, Goal(g.Player.Actor.Pos))
 	g.Ai.Add(FlankAi, FlankCalculate, g.Level, Goal(g.Player.Actor.Pos))

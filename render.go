@@ -80,7 +80,7 @@ func (g *Game) render() {
 	g.Render.Actors.Batch.SetMatrix(cam)
 
 	g.Render.renderEnvironment(g.Level, g.Player, g.Scenes)
-	g.Render.renderActors(g.Player, g.Level, g.Assets, g.Scenes)
+	g.Render.renderActors(g.Player, g.Level, g.Assets, g.Scenes, g.Ai)
 
 
 	g.Render.Env.Batch.Draw(g.Render.Env.Canvas)
@@ -97,11 +97,17 @@ func (g *Game) render() {
 	g.Render.Window.Update()
 }
 
-func (r *Render) renderActors(p *Player, l *Level, a *Assets, s *Scenes) {
+func (r *Render) renderActors(p *Player, l *Level, a *Assets, s *Scenes, ai *AiManager) {
 	if s.CurrentScene == GameScene {
 		p.Actor.updateAnimState()
 		p.Actor.CAnim.Sprite.Set(a.Sheets.Sprites, p.Actor.CAnim.Frame.Rect)
 		p.Actor.CAnim.Sprite.Draw(r.Actors.Batch, pixel.IM.ScaledXY(pixel.ZV, pixel.V(-p.Actor.Direction, 1)).Moved(p.Actor.Pos.sToVec()))
+		for i := range ai.Actors {
+			ai.Actors[i].updateAnimState()
+			ai.Actors[i].CAnim.Sprite.Set(a.Sheets.Sprites, ai.Actors[i].CAnim.Frame.Rect)
+			ai.Actors[i].CAnim.Sprite.Draw(r.Actors.Batch,
+				pixel.IM.ScaledXY(pixel.ZV, pixel.V(-ai.Actors[i].Direction, 1)).Moved(ai.Actors[i].Pos.sToVec()))
+		}
 	}
 
 }

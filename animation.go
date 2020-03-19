@@ -41,9 +41,13 @@ func buildCAnim() *CAnim {
 }
 
 func (a *Actor) updateAnimState() {
-	switch a.CAnim.State {
-	case idle:
+	switch a.State {
+	case PlayerAi:
 		a.play(a.Anims["player_idle"])
+		break
+	case MoveAi:
+		a.play(a.Anims["enemy_idle"])
+		break
 	}
 }
 

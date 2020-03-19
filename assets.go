@@ -66,8 +66,8 @@ func BuildSpriteSheet() (pixel.Picture, map[string]*Animation) {
 	sheet := GetPixelPicture(spriteSheetOutputPath)
 	animMap := make(map[string]*Animation, len(spritePaths))
 
-	frames := make([]*Frame, 0)
 	for i := range unparsedAnims {
+		frames := make([]*Frame, 0)
 		for j := 0; j < getJsonLength(unparsedAnims[i].json); j++ {
 			frame := &Frame{
 				Rect:     pixel.R(nextPos, 0, nextPos+SpriteW, 48),

@@ -28,7 +28,29 @@ func newPlayerActor(name string, pos Position, a *Assets) *Actor {
 		CAnim:     buildCAnim(),
 		Direction: -1,
 		HP:        100,
+		State:     PlayerAi,
 	}
+}
+
+func (g *Game) newActor(state AiState, pos Position) {
+	anims := make(map[string]*Animation, 0)
+	anims["enemy_idle"] = g.Assets.Anims["enemy_idle"]
+	a := &Actor{
+		Name:        string(state),
+		HP:          100,
+		Pos:         pos,
+		Anims:       anims,
+		Fov:         nil,
+		CAnim:       buildCAnim(),
+		Action:      nil,
+		ActionTaken: false,
+		Direction:   -1,
+		State:       state,
+		Type:        state,
+		Ammo:        10,
+		DMap:        nil,
+	}
+	g.Ai.Actors = append(g.Ai.Actors, a)
 }
 
 func (l *Level) newActor(state AiState, x, y int, a *Assets) {

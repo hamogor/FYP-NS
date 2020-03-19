@@ -40,8 +40,8 @@ func (l *Level) OOB(x, y int) bool {
 }
 
 // Objective per floor, can't go to next without completing.
-func (g *Game) initLevel() {
-
+func (g *Game) initAiSystem() {
+	g.Ai = NewAiManager()
 }
 
 func resolveDoors(l *Level, a *Assets) {
@@ -310,7 +310,7 @@ func (r *Rectangle) center() Position {
 
 func generateLevel(g *Game) {
 	l := &Level{
-		Tiles:  [64][64]*Tile{},
+		Tiles:  [LevelW][LevelH]*Tile{},
 		Spawn:  Position{X: 2, Y: 2},
 		Rooms:  []Rectangle{},
 		Doors:  []Position{},
@@ -453,8 +453,8 @@ func (l *Level) applyBitmask(a *Assets) {
 
 func (g *Game) BuildStaticLevel(level string) {
 	l := &Level{
-		Tiles:  [64][64]*Tile{},
-		Spawn:  Position{},
+		Tiles:  [LevelW][LevelH]*Tile{},
+		Spawn:  Position{X: 1, Y: 1},
 	}
 
 	for x := 0; x < LevelW; x++ {
@@ -482,14 +482,20 @@ func (g *Game) BuildStaticLevel(level string) {
 			l.Tiles[x][y] = door("door_n_s", 0, g.Assets)
 			parsed = true
 		} else if c == 'm' {
+			l.Tiles[x][y] = floor(0, g.Assets)
+			g.newActor(MoveAi, Position{X: x, Y: y})
 			parsed = true
 		} else if c == 'r' {
+			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 'f' {
+			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 'a' {
+			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 'h' {
+			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 's' {
 			l.Spawn = Position{X: x, Y: y}
@@ -504,6 +510,8 @@ func (g *Game) BuildStaticLevel(level string) {
 			}
 		}
 	}
+	l.applyBitmask(g.Assets)
+	g.Level = l
 }
 
 

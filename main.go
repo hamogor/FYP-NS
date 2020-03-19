@@ -21,13 +21,13 @@ func initialiseGame() *Game {
 	g.buildAssets()
 	g.initRender()
 	g.initPlayer()
-	g.initLevel()
+	g.initAiSystem()
 
 	g.initUi()
-	generateLevel(g) //TESTING
+	g.BuildStaticLevel(staticLevel)
 	g.initData()
 	g.initScenes()
-	g.initAi()
+	g.initMaps()
 	return g
 }
 

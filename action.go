@@ -14,7 +14,7 @@ func (a *Actor) move(pos Position, g *Game) {
 	} else if pos.X > a.Pos.X {
 		a.Direction = 1
 	}
-	if !g.Level.Tiles[pos.X][pos.Y].Blocks {
+	if !g.Level.Tiles[pos.X][pos.Y].Blocks && !pos.actor(g.Ai) {
 		a.Pos = pos
 		PPos = pos
 	}
