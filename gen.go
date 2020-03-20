@@ -492,9 +492,11 @@ func (g *Game) BuildStaticLevel(level string) {
 			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 'a' {
+			l.Items[x][y] = ammo(g)
 			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 'h' {
+			l.Items[x][y] = health(g)
 			l.Tiles[x][y] = floor(0, g.Assets)
 			parsed = true
 		} else if c == 's' {

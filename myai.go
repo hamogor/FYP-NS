@@ -13,7 +13,7 @@ func (g *Game) initMaps() {
 	g.Ai.Add(FleeAi, FleeCalculate, g.Level, Goal(g.Player.Actor.Pos))
 	g.Ai.Add(FlankAi, FlankCalculate, g.Level, Goal(g.Player.Actor.Pos))
 	g.Ai.Add(RangeAi, RangeCalculate, g.Level, Goal(g.Player.Actor.Pos))
-
+	g.Ai.Level = g.Level
 }
 
 func MoveCalculate(actors []*Actor, d *DijkstraMap, points ...Point) {
@@ -65,42 +65,50 @@ func FlankCalculate(actors []*Actor, d *DijkstraMap, points ...Point) {
 	}
 }
 
-func (a *Actor) MoveTransition() {
+func (a *Actor) MoveTransition(l *Level) {
 	if a.HP <= 50 {
 		a.State = FleeAi
 	}
-	//if a.Type == RangeAi && AMMO_AVAILABLE { state = type }
+	if a.Type == RangeAi && a.seenItem(Ammo, l) {
+		a.DMap.Recalc(a.Points...)
+	}
 }
 
-func (a *Actor) FleeTransition() {
+func (a *Actor) FleeTransition(l *Level) {
 	if a.HP > 50 {
 		a.State = a.Type
 	}
 }
 
-func (a *Actor) RangeTransition() {
+func (a *Actor) RangeTransition(l *Level) {
 	if a.Ammo == 0 {
 		a.State = MoveAi
 	}
 }
 
-func (a *Actor) FlankTransition() {
+func (a *Actor) FlankTransition(l *Level) {
 
 }
 
-func (a *Actor) MoveUnderlying() {
+func (a *Actor) MoveUnderlying(l *Level) {
 
 }
 
-func (a *Actor) RangeUnderlying() {
-
+func (a *Actor) RangeUnderlying(l *Level) {
+	a.Points = nil
+	if a.seenItem(Ammo, l) && a.Ammo == 0 {
+		a.DMap.Recalc(a.Points...)
+	}
 }
 
-func (a *Actor) FleeUnderlying() {
-
+func (a *Actor) FleeUnderlying(l *Level) {
+	a.Points = nil
+	if a.seenItem(Health, l) {
+		a.DMap.Recalc(a.Points...)
+	}
 }
 
-func (a *Actor) FlankUnderlying() {
+func (a *Actor) FlankUnderlying(l *Level) {
 
 }
 

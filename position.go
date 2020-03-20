@@ -63,6 +63,14 @@ func (pos Position) wall(l *Level) bool {
 	return true
 }
 
+func isItem(l *Level, x, y int) bool {
+	if l.Items[x][y].Active {
+		return true
+	} else {
+		return false
+	}
+}
+
 func (pos Position) floor(l *Level) bool {
 	if l.Tiles[pos.X][pos.Y].Terrain == Floor {
 		return true
@@ -97,6 +105,23 @@ func tilePos(x, y int) pixel.Matrix {
 
 func RoundFloat(f float64) float64 {
 	return float64(int64(f))
+}
+
+func (a *Actor) seenItem(iType ItemType, l *Level) bool {
+	a.Points = make([]Point, 0)
+	for x := 0; x < LevelW; x++ {
+		for y := 0; y < LevelH; y++ {
+			if l.Items[x][y].Active && l.Items[x][y].Type == iType && a.Fov.seen[x][y] {
+				a.Points = append(a.Points, Position{X: x, Y: y})
+			}
+		}
+	}
+
+	if len(a.Points) > 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 

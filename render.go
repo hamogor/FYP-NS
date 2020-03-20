@@ -118,9 +118,15 @@ func (r *Render) renderEnvironment(l *Level, p *Player, s *Scenes) {
 			for y := 0; y < LevelH; y++ {
 				if p.Actor.Fov.Look(x, y) {
 					l.Tiles[x][y].Sprites.L.Draw(r.Env.Batch, tilePos(x, y))
+					if isItem(l, x, y) {
+						l.Items[x][y].Sprites.L.Draw(r.Env.Batch, tilePos(x, y))
+					}
 					p.Actor.Fov.explored[x][y] = true
 				} else if p.Actor.Fov.explored[x][y] {
 					l.Tiles[x][y].Sprites.D.Draw(r.Env.Batch, tilePos(x, y))
+					if isItem(l, x, y) {
+						l.Items[x][y].Sprites.D.Draw(r.Env.Batch, tilePos(x, y))
+					}
 				}
 
 			}

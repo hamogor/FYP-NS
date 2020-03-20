@@ -14,6 +14,7 @@ type Actor struct {
 	Type        AiState
 	Ammo        int
 	DMap        *DijkstraMap
+	Points      []Point
 }
 
 func newPlayerActor(name string, pos Position, a *Assets) *Actor {

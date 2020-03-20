@@ -2,6 +2,7 @@ package main
 
 type AiManager struct {
 	Composite map[AiState]*DijkstraMap
+	Level     *Level
 	Actors []*Actor
 	Manager
 }
@@ -50,15 +51,31 @@ func (ai *AiManager) CheckTransitions() {
 	for i := range ai.Actors {
 		switch ai.Actors[i].State {
 		case MoveAi:
-			ai.Actors[i].MoveTransition(); break
+			ai.Actors[i].MoveTransition(ai.Level); break
 		case RangeAi:
-			ai.Actors[i].RangeTransition(); break
+			ai.Actors[i].RangeTransition(ai.Level); break
 		case FleeAi:
-			ai.Actors[i].FleeTransition(); break
+			ai.Actors[i].FleeTransition(ai.Level); break
 		case FlankAi:
-			ai.Actors[i].FlankTransition(); break
+			ai.Actors[i].FlankTransition(ai.Level); break
 		}
 	}
+}
+
+func (ai *AiManager) CheckUnderlying() {
+	for i := range ai.Actors {
+		switch ai.Actors[i].State {
+		case MoveAi:
+			ai.Actors[i].MoveUnderlying(ai.Level); break
+		case RangeAi:
+			ai.Actors[i].RangeUnderlying(ai.Level); break
+		case FleeAi:
+			ai.Actors[i].FleeUnderlying(ai.Level); break
+		case FlankAi:
+			ai.Actors[i].FlankUnderlying(ai.Level); break
+		}
+	}
+
 }
 
 func (ai *AiManager) SetMaps() {

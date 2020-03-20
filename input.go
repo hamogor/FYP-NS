@@ -47,6 +47,10 @@ func (g *Game) handleInput() {
 			g.Player.Actor.move(g.Player.Actor.Pos.SE(), g)
 			g.Player.Actor.ActionTaken = true
 		}
+
+		if g.Render.Window.JustPressed(pixelgl.KeyG) {
+			g.Player.Actor.pickupItem(g.Player.Actor.Pos, g.Level)
+		}
 	}
 
 	if g.Scenes.CurrentScene == MainMenuScene {
@@ -87,6 +91,7 @@ func (g *Game) handleInput() {
 	if g.Player.Actor.ActionTaken {
 		g.Player.Actor.calculateFov()
 		g.Player.updateMiniMap(g.Level, g.Ui)
+		g.Ai.Level = g.Level
 		g.Ai.Update()
 	}
 

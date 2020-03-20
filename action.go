@@ -24,3 +24,14 @@ func (a *Actor) move(pos Position, g *Game) {
 		g.Player.Actor.calculateFov()
 	}
 }
+
+func (a *Actor) pickupItem(pos Position, l *Level) {
+	if isItem(l, pos.X, pos.Y) {
+		l.Items[pos.X][pos.Y].Active = false
+		if l.Items[pos.X][pos.Y].Type == Health {
+			a.HP += 50
+		} else {
+			a.Ammo += 10
+		}
+	}
+}
