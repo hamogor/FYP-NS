@@ -4,6 +4,7 @@ type AiManager struct {
 	Composite map[AiState]*DijkstraMap
 	Level     *Level
 	Actors []*Actor
+	Actions []*Action
 	Manager
 }
 
@@ -22,7 +23,7 @@ func (g Goal) GetXY() (int, int) {
 type Manager interface {
 	Add(AiState, Calc, Map, Goal)
 	Remove(AiState)
-	Update()
+	Update(g *Game)
 }
 
 func (ai *AiManager) Add(state AiState, calcFunc Calc, level Map, goal Goal) {
@@ -34,16 +35,20 @@ func (ai *AiManager) Remove(state AiState) {
 	ai.Composite[state] = nil
 }
 
-func (ai *AiManager) Update() {
+func (ai *AiManager) Update(g *Game) {
 	ai.CalulateFovs() 			 // 1. Calculate Field of Views
 	ai.CheckTransitions()        // 2. Update active composite states
 	ai.SetMaps()                 // 3. Copy Composite maps to each NPC.
+	ai.CheckUnderlying()         // 4. Check the non-composite behaviour
+	ai.DecideActions()           // 5. Check DMap costs and push appropriate action
+	ai.ExecuteActions(g)          // 6. Execute each action
 }
 
 func NewAiManager() *AiManager {
 	return &AiManager{
 		Composite: make(map[AiState]*DijkstraMap, 0),
 		Actors: make([]*Actor, 0),
+		Actions: make([]*Action, 0),
 	}
 }
 
@@ -75,7 +80,29 @@ func (ai *AiManager) CheckUnderlying() {
 			ai.Actors[i].FlankUnderlying(ai.Level); break
 		}
 	}
+}
 
+func (ai *AiManager) DecideActions() {
+	for i := range ai.Actors {
+		ln := ai.Actors[i].DMap.LowestNeighbour(ai.Actors[i].Pos.X, ai.Actors[i].Pos.Y)
+		switch ai.Actors[i].State {
+		case MoveAi:
+			ai.Actors[i].MoveBehaviour(ai.Level, ln, ai); break
+		case RangeAi:
+			ai.Actors[i].RangeBehaviour(ai.Level, ln, ai); break
+		case FleeAi:
+			ai.Actors[i].FleeBehaviour(ai.Level, ln, ai); break
+		case FlankAi:
+			ai.Actors[i].FlankBehaviour(ai.Level, ln, ai); break
+		}
+	}
+}
+
+func (ai *AiManager) ExecuteActions(g *Game) {
+	for i := range ai.Actions {
+		ai.Actions[i].Action(ai.Actions[i].Owner, ai.Actions[i].Pos, g)
+	}
+	ai.Actions = make([]*Action, 0)
 }
 
 func (ai *AiManager) SetMaps() {
@@ -118,5 +145,7 @@ func (ai *AiManager) SetMaps() {
 		}
 	}
 }
+
+
 
 

@@ -124,4 +124,13 @@ func (a *Actor) seenItem(iType ItemType, l *Level) bool {
 	}
 }
 
+func (pos Position) getActor(l *AiManager) *Actor {
+	for i := range l.Actors {
+		if l.Actors[i].Pos == pos {
+			return l.Actors[i]
+		}
+	}
+	return &Actor{}
+}
+
 

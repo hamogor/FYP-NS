@@ -6,9 +6,9 @@ type Action struct {
 	Pos    Position
 }
 
-type ActionFunc func(a *Actor, pos Position, l *Level, assets *Assets)
+type ActionFunc func(a *Actor, pos Position, g *Game)
 
-func (a *Actor) move(pos Position, g *Game) {
+func move(a *Actor, pos Position, g *Game) {
 	if pos.X < a.Pos.X {
 		a.Direction = -1
 	} else if pos.X > a.Pos.X {
@@ -25,13 +25,30 @@ func (a *Actor) move(pos Position, g *Game) {
 	}
 }
 
-func (a *Actor) pickupItem(pos Position, l *Level) {
-	if isItem(l, pos.X, pos.Y) {
-		l.Items[pos.X][pos.Y].Active = false
-		if l.Items[pos.X][pos.Y].Type == Health {
+func melee(a *Actor, pos Position, g *Game) {
+	if pos.X < a.Pos.X {
+		a.Direction = -1
+	} else if pos.X > a.Pos.X {
+		a.Direction = 1
+	}
+}
+
+
+func pickupItem(a *Actor, pos Position, g *Game) {
+	if isItem(g.Level, pos.X, pos.Y) {
+		g.Level.Items[pos.X][pos.Y].Active = false
+		if g.Level.Items[pos.X][pos.Y].Type == Health {
 			a.HP += 50
 		} else {
 			a.Ammo += 10
 		}
 	}
+}
+
+func pushAction(ai *AiManager, a *Actor, action ActionFunc, pos Position) {
+	ai.Actions = append(ai.Actions, &Action{
+		Owner:  a,
+		Action: action,
+		Pos:    pos,
+	})
 }

@@ -112,5 +112,23 @@ func (a *Actor) FlankUnderlying(l *Level) {
 
 }
 
+func (a *Actor) MoveBehaviour(l *Level, ln WeightedPoint, ai *AiManager) {
+	if a.DMap.Points[ln.X][ln.Y] > 0 {
+		pushAction(ai, a, move, Position{X: ln.X, Y: ln.Y})
+	}
+}
+
+func (a *Actor) FleeBehaviour(l *Level, ln WeightedPoint, ai *AiManager) {
+
+}
+
+func (a *Actor) FlankBehaviour(l *Level, ln WeightedPoint, ai *AiManager) {
+
+}
+
+func (a *Actor) RangeBehaviour(l *Level, ln WeightedPoint, ai *AiManager) {
+
+}
+
 
 
